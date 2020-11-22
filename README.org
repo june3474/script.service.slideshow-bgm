@@ -1,0 +1,57 @@
+* slideshow-BGM
+*slideshow-BGM* is a kodi addon(python script) that plays background music(BGM) while playing a slideshow.
+
+Feel free to use, modify and share your code!
+
+** 1. Install
+1) *Enable installing from unknown sources.*
+    - *Notes:* Pictures belows were copied from [[https://www.technadu.com/enable-unknown-sources-on-kodi/11658/]]
+    - Go to kodi's Home screen and click on the gear icon located in the top-left corner.
+    [[file:resources/docs/enable_unknown_source_1.jpg]]
+    - click on the *system* button on the right side of the screen.
+    [[file:resources/docs/enable_unknown_source_2.jpg]]
+    - Using the left-placed sidebar, hover over the 'Add-ons' item.
+    On the right, click on *Unknown Sources*. You will be presented with a message against enabling this option. You can feel free to continue by clicking on Yes.
+2) *Download slideshow-BGM.zip*
+    - Go to  https://github.com/june3474/script.slideshow-BGM and push the green code button. You will be able to see '*Download ZIP*' link. Click on it.
+    [[file:resources/docs/download.png]]
+3) *Install the downloaded zip file*
+    - In Kodi's home screen, click on *Add-ons*. Then click on the open box icon (top-left corner) and select *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-BGM-master.zip file you downloaded and click it.
+    [[file:resources/docs/install_1.png]]
+    [[file:resources/docs/install_2.png]]
+
+** 2. Hook up with skin
+*slideshow-BGM* is expected to run only while slideshowing. One simple way to do so is hooking up slideshow-BGM script to slideshow window(SlideShow.xml).
+You can do it by manually editing ~SlideShow.xml~ file or running '~hookup.py~' script included in the slideshow-BGM package.
+
+*** Manual editing 
+    - It is easy and straightforward. Just locate the ~SlideShow.xml~ file of your current skin; open it  with your favorite text editor; and insert one line of xml codes as below:
+
+[[file:resources/docs/hookup_after.png]]
+
+*Note:* You will need root/Administrator privilege if you are using the default skin(as of Kodi v18 Leia, estuary).
+*** Use =hookup.py= script
+    - If you don't like to edit manually for any reason, you can alternatively use '~hookup.py~' script. ~hookup.py~ resides in =<user addon directory>/addons/script.slideshow-BGM/resources/lib/=, but the location of '/<user addon directory>/' varies depending on OS.
+For instance:
+#+BEGIN_EXAMPLE
+ On Linux,  /home/USERNAME/.kodi
+ On Windows, C:\Users\USERNAME\AppData\Roaming\Kodi
+#+END_EXAMPLE
+
+    - Locate ~hookup.py~ and run it.
+#+BEGIN_EXAMPLE
+cd path-to-directory-containing-hookup.py
+python hookup.py
+# Or if root/Administrator privilege required
+sudo python hookup.py
+#+END_EXAMPLE
+
+** 3. Configure
+The last step is to choose yor BGM. Go to the configure screen of slideshow-BGM and select a playlist or a directory which contains music. If you choose a directory, slideshow-BGM will create a playlist in [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]]. That's it. Enjoy!
+
+[[file:resources/docs/configure_1.png]]
+[[file:resources/docs/configure_2.png]]
+
+** Change Log
+- [version 0.1.0] Initial version, compatible with kodi v18 Leia.
+
