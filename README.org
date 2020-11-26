@@ -1,5 +1,5 @@
 * slideshow-BGM
-*slideshow-BGM* is a kodi addon(python script) that plays background music(BGM) while playing a slideshow.
+*slideshow-BGM* is a kodi addon(python script) that plays background music(BGM) while playing a slideshow. It is compatible with kodi v18 Leia.
 
 Feel free to use, modify and share your code!
 
@@ -52,6 +52,36 @@ The last step is to choose yor BGM. Go to the configure screen of slideshow-BGM 
 [[file:resources/docs/configure_1.png]]
 [[file:resources/docs/configure_2.png]]
 
+** Troubleshooting
+*** slideshow-BGM keeps playing the same music from the beginnig
+In most cases, this happens due to corrupted or abnormaly encoded audio files. They seem to fail SeekTime function of kodi which use ffmpeg/libav internally; and SeekTime() ends up on time 0, the beginnig of the file. Take a look at the example below:
+
+**** A sample audio file
+#+BEGIN_EXAMPLE
+ffprobe version 4.2.4 Copyright (c) 2007-2020 the FFmpeg developers
+Input #0, mp3, from 'sample.mp3':
+  Metadata:
+    major_brand     : 3gp4
+    minor_version   : 512
+    compatible_brands: isomiso23gp4
+    encoder         : Lavf58.20.100
+  Duration: 00:04:22.94, start: 0.138122, bitrate: 15 kb/s
+    Stream #0:0: Audio: mp3, 8000 Hz, mono, fltp, 8 kb/s
+    Stream #0:1: Video: mjpeg (Baseline), yuvj420p(pc, bt470bg/unknown/unknown), 1500x1495 [SAR 1:1 DAR 300:299], 90k tbr, 90k tbn, 90k tbc (attached pic)
+    Metadata:
+      comment         : Cover (front)
+#+END_EXAMPLE
+
+**** Content of kodi.log
+#+BEGIN_EXAMPLE
+ffmpeg[7F6567015700]: [mp3float] Could not update timestamps for skipped samples.
+SeekTime - seek ended up on time 0
+#+END_EXAMPLE
+
+The solution is to romove the audio file from your BGM playlist. If you have chosen a directory in slideshow-BGM settings, edit '~BGM.m3u~' file in ~script.slideshow-BGM~ directory(folder) under [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]].
+
 ** Change Log
 - [version 0.1.0] Initial version, compatible with kodi v18 Leia.
-
+- [version 0.1.0]
+  + Add some thread-safe code
+  + Add troubleshooting section in README.org

@@ -38,13 +38,5 @@ msgid "Directory"
 msgstr ""
 
 msgctxt "#32014"
-msgid "Play Random"
-msgstr ""
-
-msgctxt "#32015"
-msgid "Hook Slideshow-BGM up to Slideshow"
-msgstr ""
-
-msgctxt "#32016"
-msgid "Unhook Slideshow-BGM from Slideshow"
+msgid "Shuffle"
 msgstr ""
