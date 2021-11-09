@@ -78,7 +78,7 @@ class Player(xbmc.Player):
         return playlist
 
     def play_BGM(self):
-        """Play BGM if currently neither playing video nor audio.
+        """Play BGM if currently not playing video or audio.
 
         """
         # Wait till the previous play--if any--ends completely.
