@@ -1,5 +1,6 @@
 * slideshow-BGM
-*slideshow-BGM* is a kodi addon(python script) that plays background music(BGM) while playing a slideshow. It is compatible with kodi v18 Leia.
+* Currently Upgrading the Addon... Hold Just A Couple of Days! 
+*slideshow-BGM* is a kodi addon(python script) that plays background music(BGM) while playing a slideshow.
 
 Feel free to use, modify and share your code!
 
