@@ -49,7 +49,7 @@ class Player(xbmc.Player):
         If user chose a playlist in the addon configuration, this function loads the playlist chosen.
         Or, in the case that user chose a directory(folder), this function first looks for
         ``BGM.m3u`` file in your addon profile directory(e.g., /home/[username]/.kodi/userdata/slideshow-BGM/
-        on linux; C:\Users\\[username]\\AppData\\Roaming\\Kodi\\userdata\\slideshow-BGM on Windows).
+        on linux; C:\\Users\\[username]\\AppData\\Roaming\\Kodi\\userdata\\slideshow-BGM on Windows).
         And if the file exists AND its modification time is newer than settings.xml's in the same directory,
         load that BGM.m3u file; otherwise, it creates ``BGM.m3u`` file in the addon profile directory and load it.
 
