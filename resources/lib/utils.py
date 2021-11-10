@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """Helper functions"""
 
-from __future__ import absolute_import
 import os
-import xbmc, xbmcgui
+import xbmc, xbmcgui, xbmcvfs
 from . import addon
 
 
@@ -47,7 +46,7 @@ def create_playlist(BGM_dir):
             If there is no music file in the ``BGM_dir``, this function returns an empty playlist.
 
     """
-    playlist_dir = xbmc.translatePath(addon.getAddonInfo('profile'))
+    playlist_dir = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
     playlist_file = os.path.join(playlist_dir, 'BGM.m3u')
     music_file_exts = ('.mp2', '.mp3', '.wav', '.ogg', '.wma')
 
@@ -62,7 +61,7 @@ def create_playlist(BGM_dir):
                         count += 1
     except (IOError,):
         notify("Failed to create a playlist file in "
-               + xbmc.translatePath(addon.getAddonInfo('profile')),
+               + xbmcvfs.translatePath(addon.getAddonInfo('profile')),
                xbmcgui.NOTIFICATION_ERROR)
         return None
 

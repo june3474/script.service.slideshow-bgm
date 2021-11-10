@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
-
 import sys
 import xbmc, xbmcaddon
 from resources.lib.player import Player

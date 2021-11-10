@@ -3,17 +3,17 @@
 
 Technically, insert ``<onload> RunAddon(script.slideshow-BGM) </onload>`` into
 the beginning of `SlideShow.xml` file of the current skin.
+It is easier and straightforward to edit Slideshow.xml directly though.
 
 Notes:
-    If you are using the default skin(as of Leia, ``estuary``), you have to
-    run this script as root because of permission issue.
+    If you are using the default skin(as of Matrix, ``estuary``), you have to
+    run this script as root because of the permission issue.
 
 """
 
-from __future__ import absolute_import
 import os
 import xml.etree.ElementTree as ET
-import xbmc
+import xbmc, xbmcvfs
 
 
 def indent(elem, level=0):
@@ -48,7 +48,7 @@ def find_slideshow_xml():
 
     """
     name = 'SlideShow.xml'
-    skin_dir = xbmc.translatePath('special://skin')
+    skin_dir = xbmcvfs.translatePath('special://skin')
     for root, dirs, files in os.walk(skin_dir):
         if name in files:
             return os.path.join(root, name)

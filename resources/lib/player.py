@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 """Define a subclass of ``xmbc.Player``"""
 
-from __future__ import absolute_import
-try:
-    import thread  # python 2
-except ImportError:
-    import _thread as thread  # python 3
+import _thread as thread
 import os
 import xbmc
 from . import addon
@@ -27,10 +23,11 @@ class Player(xbmc.Player):
         self.BGM_position = -1
         self.BGM_seektime = 0
         self.AVstarted = False
+        self.mute(False)
 
+        xbmc.executebuiltin('PlayerControl(RepeatAll)')
         # Thread automatically ends when main thread does.
         thread.start_new_thread(self.track_BGM, ())
-        self.mute(False)
 
     def mute(self, switch):
         """Mute on/off
