@@ -25,7 +25,6 @@ class Player(xbmc.Player):
         self.AVstarted = False
         self.mute(False)
 
-        xbmc.executebuiltin('PlayerControl(RepeatAll)')
         # Thread automatically ends when main thread does.
         thread.start_new_thread(self.track_BGM, ())
 
@@ -82,8 +81,9 @@ class Player(xbmc.Player):
         xbmc.sleep(500)
         #: If something--like video slideshow--is playing on till now, do nothing.
         if not self.isPlaying():
-            if self.BGM_position == -1:  # first song
+            if self.BGM_position == -1:  # first play
                 self.play(self.playlist, startpos=self.BGM_position)
+                xbmc.executebuiltin('PlayerControl(RepeatAll)')
             else:
                 self.mute(True)  # prevent sound overlap 
                 self.play(self.playlist, startpos=self.BGM_position)
