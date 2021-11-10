@@ -1,5 +1,6 @@
 * slideshow-BGM
 *slideshow-BGM* is a kodi addon(python script) that plays background music(BGM) while playing a slideshow.
+
 Feel free to use, modify and share your code!
 
 ** 1. Install
@@ -12,10 +13,10 @@ Feel free to use, modify and share your code!
     - Using the left-placed sidebar, hover over the 'Add-ons' item.
     On the right, click on *Unknown Sources*. You will be presented with a message against enabling this option. You can feel free to continue by clicking on Yes.
 2) *Download slideshow-BGM*
-    - For kodi v18 Leia and lower, [[https://github.com/june3474/script.slideshow-BGM/releases/download/0.1.1/script
-    .slideshow-BGM-0.1.1.zip]]
-    - For kodi v19 Matrix, [[https://github.com/june3474/script.slideshow-BGM/releases/latest/download/script
-    .slideshow-BGM-0.2.0.zip]]
+    - For kodi v18 Leia and lower, https://github.com/june3474/script.slideshow-BGM/releases/download/0.1.1/script
+    .slideshow-BGM-0.1.1.zip
+    - For kodi v19 Matrix, https://github.com/june3474/script.slideshow-BGM/releases/latest/download/script
+    .slideshow-BGM-0.2.0.zip
 3) *Install the downloaded zip file*
     - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-BGM-master.zip file you downloaded and click it.
     [[file:resources/docs/install_1.png]]
