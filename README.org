@@ -70,5 +70,5 @@ The solution is to romove the audio file from your BGM playlist. If you have cho
 - [version 0.1.1]
   + Add some thread-safe code
   + Add troubleshooting section in README.org
-- [version 0.2.1]
+- [version 0.2.0]
   + Compatible with kodi v19 Matrix
