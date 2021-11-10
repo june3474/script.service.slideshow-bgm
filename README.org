@@ -16,7 +16,7 @@ Feel free to use, modify and share your code!
     - For kodi v18 Leia and lower, https://github.com/june3474/script.slideshow-BGM/releases/download/0.1.1/script.slideshow-BGM-0.1.1.zip
     - For kodi v19 Matrix, https://github.com/june3474/script.slideshow-BGM/releases/latest/download/script.slideshow-BGM-0.2.0.zip
 3) *Install the downloaded zip file*
-    - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-BGM-master.zip file you downloaded and click it.
+    - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-BGM-<version>.zip file you downloaded and click it.
     [[file:resources/docs/install_1.png]]
     [[file:resources/docs/install_2.png]]
 
