@@ -38,8 +38,8 @@ The last step is to choose yor BGM. Go to the configure screen of slideshow-BGM 
 [[file:resources/docs/configure_2.png]]
 
 ** Troubleshooting
-*** slideshow-BGM keeps playing the same music from the beginnig
-In most cases, this happens due to corrupted or abnormaly encoded audio files. They seem to fail SeekTime function of kodi which use ffmpeg/libav internally; and SeekTime() ends up on time 0, the beginnig of the file. Take a look at the example below:
+*** slideshow-BGM keeps playing the same music from the beginning
+In most cases, this happens due to corrupted or abnormally encoded audio files. They seem to fail SeekTime function of kodi which use ffmpeg/libav internally; and SeekTime() ends up on time 0, the beginning of the file. Take a look at the example below:
 
 **** A sample audio file
 #+BEGIN_EXAMPLE
@@ -63,7 +63,8 @@ ffmpeg[7F6567015700]: [mp3float] Could not update timestamps for skipped samples
 SeekTime - seek ended up on time 0
 #+END_EXAMPLE
 
-The solution is to romove the audio file from your BGM playlist. If you have chosen a directory in slideshow-BGM settings, edit '~BGM.m3u~' file in ~script.slideshow-BGM~ directory(folder) under [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]].
+The solution is to remove the audio file from your BGM playlist. If you have chosen a directory in slideshow-BGM
+settings, edit '~BGM.m3u~' file in ~script.slideshow-BGM~ directory(folder) under [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]].
 
 ** Change Log
 - [version 0.1.0] Initial version, compatible with kodi v18 Leia.
