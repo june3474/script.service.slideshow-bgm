@@ -5,8 +5,7 @@ import xml.etree.ElementTree as ET
 import xbmc, xbmcvfs
 from . import addon, addonId
 
-#. admit to not being a good name
-class Hooker():
+class Binder():
     """Helper class used to hook slideshow-BGM addon up to the current skin.
 
     """
