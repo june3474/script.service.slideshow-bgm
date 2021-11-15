@@ -4,8 +4,9 @@
     <import addon="xbmc.python" version="3.0.0"/>
   </requires>
   <extension point="xbmc.python.script" library="addon.py">
-    <provides>image</provides>
+    <provides>excutable</provides>
   </extension>
+  <extension point="xbmc.service" library="service.py" />
   <extension point="xbmc.addon.metadata">
     <summary lang="en_GB">Slideshow with BGM</summary>
     <description lang="en_GB">Play background music while slideshowing</description>
@@ -14,10 +15,8 @@
     <website>http://github.com/june3474/script.slideshow-BGM</website> <!-- may be omitted.  -->
     <email>june3474@gmail.com</email> <!-- may be omitted.  -->
     <source>http://github.com/june3474/script-slideshow-BGM</source>
-    <news>
-        [version 0.1.0] Initial version, compatible with kodi v18 Leia.
-        [version 0.1.1] Add some thread-safe code.
-        [version 0.2.0] Compatible with kodi v19 Matrix.
+    <news>Version 0.2.0 
+    Compatible with kodi v19 Matrix.
     </news>
     <assets>
         <icon>resources/icon.png</icon>

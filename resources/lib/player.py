@@ -3,7 +3,7 @@
 
 import _thread as thread
 import os
-import xbmc
+import xbmc, xbmcvfs
 from . import addon
 from .utils import create_playlist, log
 
@@ -28,6 +28,7 @@ class Player(xbmc.Player):
         # Thread automatically ends when main thread does.
         thread.start_new_thread(self.track_BGM, ())
 
+
     def mute(self, switch):
         """Mute on/off
 
@@ -38,7 +39,8 @@ class Player(xbmc.Player):
         state = xbmc.getCondVisibility('Player.Muted')
         if bool(state) != switch:
             xbmc.executebuiltin('Mute()')
-        
+
+
     def load_playlist(self):
         """Load or create--if necessary--a playlist to play BGM.
 
@@ -58,9 +60,9 @@ class Player(xbmc.Player):
         if addon.getSetting('type') == 'Playlist':
             playlist_file = addon.getSetting('playlist')
         else:  # If 'Directory'
-            playlist_file = os.path.join(xbmc.translatePath(addon.getAddonInfo('profile')),
+            playlist_file = os.path.join(xbmcvfs.translatePath(addon.getAddonInfo('profile')),
                                          'BGM.m3u')
-            settings_file = os.path.join(xbmc.translatePath(addon.getAddonInfo('profile')),
+            settings_file = os.path.join(xbmcvfs.translatePath(addon.getAddonInfo('profile')),
                                          'settings.xml')
             if os.path.exists(playlist_file) and \
                     os.path.getmtime(playlist_file) > os.path.getmtime(settings_file):
@@ -69,9 +71,10 @@ class Player(xbmc.Player):
                 playlist_file = create_playlist(addon.getSetting('directory'))
 
         playlist.load(playlist_file)
-        if addon.getSettingBool('shuffle'):
-            playlist.shuffle()
+        log('playlist %s loaded' % playlist_file)
+        playlist.shuffle(addon.getSettingBool('shuffle'))
         return playlist
+
 
     def play_BGM(self):
         """Play BGM if currently not playing video or audio.
@@ -82,10 +85,12 @@ class Player(xbmc.Player):
         #: If something--like video slideshow--is playing on till now, do nothing.
         if not self.isPlaying():
             if self.BGM_position == -1:  # first play
+                log('play started.')
                 self.play(self.playlist, startpos=self.BGM_position)
                 xbmc.executebuiltin('PlayerControl(RepeatAll)')
             else:
-                self.mute(True)  # prevent sound overlap 
+                self.mute(True)  # prevent sound overlap
+                log('play resumed.')
                 self.play(self.playlist, startpos=self.BGM_position)
                 # Wait until play actually begins. Ugly again.
                 # Blocking methods such as Event.wait or Lock.acquire will freeze though.
@@ -95,6 +100,11 @@ class Player(xbmc.Player):
                 xbmc.executebuiltin('Seek(%s)' % self.BGM_seektime)
                 xbmc.sleep(500)
                 self.mute(False)
+        else:
+            log('play ignored: playing something other.')
+
+        log('play stopped.')
+
 
     def track_BGM(self):
         """Keep track of BGM playing.
@@ -111,6 +121,7 @@ class Player(xbmc.Player):
 
             xbmc.sleep(1000)
 
+
     def onPlayBackStopped(self):
         """Callback function called when audio/video play stops by user.
 
@@ -118,12 +129,14 @@ class Player(xbmc.Player):
         self.AVstarted = False
         self.play_BGM()
 
+
     def onPlayBackEnded(self):
         """Callback function called when audio/video play ends normally.
 
         """
         self.AVstarted = False
         self.play_BGM()
+        
 
     def onAVStarted(self):
         """Callback function called when audio/video has actually started

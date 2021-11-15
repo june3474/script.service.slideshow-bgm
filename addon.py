@@ -3,12 +3,22 @@
 import sys
 import xbmc, xbmcaddon
 from resources.lib.player import Player
-from resources.lib.utils import check_config, log
+from resources.lib.utils import check_config, show_dialog, log
 
 
-log("Addon started")
-if not check_config():
-    sys.exit(1)
+log("Addon started.")
+
+while True:
+    msg = check_config()
+    if msg == '':
+        break
+    else:
+        if show_dialog(msg + '\nClick Yes to proceed to Slideshow-BGM settings'
+                           + '\nCancel will abort Slideshow-BGM'):
+            xbmcaddon.Addon('script.slideshow-BGM').openSettings()
+        else:
+            log('Aborted by user.')
+            sys.exit(1)
 
 player = Player()
 player.play_BGM()
@@ -19,4 +29,5 @@ while xbmc.getCondVisibility('Slideshow.IsActive'):
     xbmc.sleep(1000)
 
 player.stop()
-log('Addon stopped')
+
+log('Addon exits.')
