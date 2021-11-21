@@ -3,22 +3,25 @@
 import os
 import xml.etree.ElementTree as ET
 import xbmc, xbmcvfs
-from . import addon, addonId
+from . import addonId
 
-class Binder(target=Binder.find_SlideShow_xml()):
-    """Helper class used to tie slideshow-BGM addon to the current skin.
+
+class Binder():
+    """Helper class used to tie slideshow-bgm addon to the current skin.
 
     """
 
-    def __init__(self):
-        self.target = target
+    def __init__(self, target=None):
+        self.target = target if target else self.find_SlideShow_xml()
         self.parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))  # preserve comments
         self.tree = ET.parse(self.target, self.parser)
         self.root = self.tree.getroot()
         self.element = ET.Element('onload')
-        self.element.attrib = {'condition': 'System.HasAddon(%s)' % addonId + ' + ' + 'System.AddonIsEnabled(%s)' % addonId}
-        self.element.text = 'RunAddon(%s)' % addonId
-        
+        self.element.attrib = {'condition': 'System.HasAddon(%s)' % addonId +
+                                            ' + ' +
+                                            'System.AddonIsEnabled(%s)' % addonId}
+        self.element.text = ('RunAddon(%s)' % addonId).strip()
+
     def indent(self, elem, level=0):
         """Arrange indentations of a xml tree.
 
@@ -63,53 +66,73 @@ class Binder(target=Binder.find_SlideShow_xml()):
 
         return path
 
-    def check_hooked(self):
-        """Check current skin's SlideShow.xml is tied to ``slideshow-BGM`` of the current
-        skin.
-
-        Technically, check ``<onload  condition="System.HasAddon(script.slideshow-BGM) + System.AddonIsEnabled(script.slideshow-BGM)">
-        RunAddon(script.slideshow-BGM)</onload>`` node exists in the `SlideShow.xml` file of the current skin.
+    def check_permission(self):
+        """Check the write permission for ``SlideShow.xml`` and the enclosing directory
 
         Returns:
-            tag(:class:`xml.etree.ElementTree.Element`):  tag if it's hooked, None otherwise.
+            bool: True if we have the permission, False ohterwise.
 
         """
 
-        for element in self.root.findall('onload'):
-            if element.text.strip() == 'RunAddon(script.slideshow-BGM)':
-                return element
-            else:
-                return None
+        return os.access(self.target, os.W_OK) and \
+               os.access(os.path.dirname(self.target), os.W_OK)
 
-    def insert_tag(self):
-        """Insert tag ``<onload condition="System.HasAddon(script.slideshow-BGM) + System.AddonIsEnabled(script.slideshow-BGM)">
-        RunAddon(script.slideshow-BGM)</onload>`` into `SlideShow.xml` file of the current skin.
+    def check_hooked(self):
+        """Check current skin's SlideShow.xml is tied to ``slideshow-bgm`` of the current
+        skin.
+
+        Technically, check ``<onload  condition="System.HasAddon(script.service.slideshow-bgm) +
+        System.AddonIsEnabled(script.service.slideshow-bgm)">RunAddon(script.service.slideshow-bgm)</onload>``
+        node exists in the `SlideShow.xml` file of the current skin.
 
         Returns:
-            bool: True if suceeds, False otherwise.
+            bool:  True if it's hooked, False otherwise.
+
+        """
+
+        ret = None
+        #: xml.etree.ElementTree.Element: Elements with no subelements will test as ``False``.
+        for element in self.root.findall('onload'):
+            if element.text.strip() == self.element.text:
+                ret = element
+                break
+            else:
+                continue
+        return False if ret is None else True
+
+    def insert_tag(self):
+        """Insert hook-up tag into `SlideShow.xml` file of the current skin.
+
+        The contents hook-up tag are ``<onload condition="System.HasAddon(script.service.slideshow-bgm) +
+        System.AddonIsEnabled(script.service.slideshow-bgm)">RunAddon(script.service.slideshow-bgm)</onload>``
+
+        Returns:
+            bool: True if succeeds, False otherwise.
 
         """
 
         self.root.insert(0, self.element)
         self.indent(self.root)
-        if self.tree.write(self.target, encoding="utf-8", xml_declaration=True):
-            return True
-        else:
+        try:
+            self.tree.write(self.target, encoding="utf-8", xml_declaration=True)
+        except:
             return False
 
-    def remove_tag(self):
-        """Remove tag ``<onload condition="System.HasAddon(script.slideshow-BGM) + System.AddonIsEnabled(script.slideshow-BGM)"> 
-        RunAddon(script.slideshow-BGM) </onload>`` from `SlideShow.xml` file of the current skin.
+        return True
 
-        Returns:
-            bool: True if suceeds, False otherwise.
+    def remove_tag(self):
+        """Remove the hook-up tag from `SlideShow.xml` file of the current skin.
 
         """
 
         for element in self.root.findall('onload'):
-            if element.text.strip() == 'RunAddon(script.slideshow-BGM)':
+            if element.text.strip() == self.element.text:
                 self.root.remove(element)
-                self.indent(self.root)
-                return self.tree.write(self.target, encoding="utf-8", xml_declaration=True)
-            else:
-                return None
+
+        self.indent(self.root)
+        try:
+            self.tree.write(self.target, encoding="utf-8", xml_declaration=True)
+        except:
+            return False
+
+        return True

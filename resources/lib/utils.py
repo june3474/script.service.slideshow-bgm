@@ -3,7 +3,7 @@
 
 import os
 import xbmc, xbmcgui, xbmcvfs
-from . import addon
+from . import addon, addonId
 
 
 def log(msg):
@@ -13,10 +13,10 @@ def log(msg):
         msg (str): message to log.
 
     """
-    xbmc.log('[slideshow-BGM] ' + msg, xbmc.LOGINFO)
+    xbmc.log('[slideshow-bgm] ' + msg, xbmc.LOGINFO)
 
 
-def notify(message, heading='[Slideshow-BGM]', icon=xbmcgui.NOTIFICATION_INFO, time=7000, sound=True):
+def notify(message, heading=addonId, icon=xbmcgui.NOTIFICATION_INFO, time=7000, sound=True):
     """Wrapper function of ``xbmcgui.Dialog().notification``.
 
     Args:
@@ -35,11 +35,11 @@ def notify(message, heading='[Slideshow-BGM]', icon=xbmcgui.NOTIFICATION_INFO, t
     xbmcgui.Dialog().notification(heading, message, icon, time, sound)
 
 
-def show_dialog(message, heading='[Slideshow-BGM]', noLabel='Cancel', yesLabel='OK'):
+def show_yesno(message, heading=addonId, noLabel='Cancel', yesLabel='OK'):
     """ Wrapper function of ``xbmcgui.Dialog().yesno``.
 
     Args:
-        messager (str): message to show.
+        message (str): message to show.
         heading (str): header text.
         noLabel (str): text on No button.
         yesLabel (str): text on Yes button.
@@ -56,27 +56,44 @@ def show_dialog(message, heading='[Slideshow-BGM]', noLabel='Cancel', yesLabel='
     return xbmcgui.Dialog().yesno(heading, message, noLabel, yesLabel)
 
 
-def create_playlist(BGM_dir):
-    """Create a playlist file(m3u file) with the songs in ``BGM_dir``.
+def show_ok(message, heading=addonId):
+    """ Wrapper function of ``xbmcgui.Dialog().ok``.
 
     Args:
-        BGM_dir (str): Directory where to look for music files.
+        message (str): message to show.
+        heading (str): header text.
+
+    Returns:
+        bool: True if 'OK' was pressed, False otherwise.
+
+    """
+
+    return xbmcgui.Dialog().ok(heading, message)
+
+
+def create_playlist(bgm_dir):
+    """Create a playlist file(m3u file) with the songs in ``bgm_dir``.
+
+    Args:
+        bgm_dir (str): Directory where to look for music files.
 
     Returns:
         str: The path of newly created playlist file if successful, ``None`` otherwise
+
+
         .. Warning::
-            If there is no music file in the ``BGM_dir``, this function returns an empty playlist.
+            If there is no music file in the ``bgm_dir``, this function returns an empty playlist.
 
     """
     playlist_dir = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
-    playlist_file = os.path.join(playlist_dir, 'BGM.m3u')
+    playlist_file = os.path.join(playlist_dir, 'bgm.m3u')
     music_file_exts = ('.mp2', '.mp3', '.wav', '.ogg', '.wma')
 
     count = 0
     try:
         with open(playlist_file, 'w') as f:
             f.write('#EXTM3U' + os.linesep * 2)
-            for root, dirs, files in os.walk(BGM_dir, followlinks=True):
+            for root, dirs, files in os.walk(bgm_dir, followlinks=True):
                 for filename in files:
                     if filename.lower().endswith(music_file_exts):
                         f.write(os.path.join(root, filename) + os.linesep)
@@ -88,7 +105,7 @@ def create_playlist(BGM_dir):
         return None
 
     if not count:
-        notify('No music file in %s' % BGM_dir,
+        notify('No music file in %s' % bgm_dir,
                xbmcgui.NOTIFICATION_WARNING)
 
     return playlist_file
@@ -108,7 +125,7 @@ def check_config():
 
     if (_type == 'Playlist' and playlist == 'Not Selected') or \
             (_type == 'Directory' and directory == 'Not Selected'):
-        msg = "You have not yet configured slideshow-BGM.\n"
+        msg = "No background music set for slideshow.\n"
 
     elif _type == 'Playlist' and not os.path.exists(playlist):
         msg = "Invalid playlist file: %s\n" % playlist
