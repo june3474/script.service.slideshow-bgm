@@ -145,12 +145,12 @@ def check_config():
     if _type == 'Playlist':
         if playlist.decode('utf-8') == 'Not Selected':
             msg = "No background music set.\n"
-        elif not os.path.exists(playlist.decode('utf-8')):
+        elif not os.path.exists(playlist):  # pass bytes to avoid encoding issue
             msg = "Invalid playlist file: %s\n" % playlist.decode('utf-8')
     else:  # directory
         if bgm_dir.decode('utf-8') == 'Not Selected':
             msg = "No background music set.\n"
-        elif not os.path.exists(bgm_dir.decode('utf-8')):
+        elif not os.path.exists(bgm_dir):  # pass bytes to avoid encoding issue
             msg = "Invalid directory: %s\n" % bgm_dir.decode('utf-8')
         elif not os.path.exists(playlist_file):
             create_playlist(bgm_dir)
