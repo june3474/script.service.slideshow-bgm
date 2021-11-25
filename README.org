@@ -72,7 +72,7 @@ SeekTime - seek ended up on time 0
 #+END_EXAMPLE
 
 The solution is to remove the audio file from your bgm playlist. If you have chosen a directory in slideshow-bgm
-settings, edit ~bgm.m3u~ file in ~script.slideshow-bgm~ directory(folder) under [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]].
+settings, edit ~bgm.m3u~ file in ~script.service.slideshow-bgm~ directory(folder) under [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]].
 
 ** Change Log
 - [version 0.1.0] Initial version, compatible with kodi v18 Leia.
