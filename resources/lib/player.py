@@ -28,8 +28,9 @@ class Player(xbmc.Player):
         # Thread automatically ends when main thread does.
         thread.start_new_thread(self.track_bgm, ())
 
-    def mute(self, switch):
-        """Mute on/off
+    @staticmethod
+    def mute(switch):
+        """Mute on/off.
 
         Args:
             switch (bool): Mute on if True, off otherwise.
@@ -39,15 +40,14 @@ class Player(xbmc.Player):
         if bool(state) != switch:
             xbmc.executebuiltin('Mute()')
 
-    def load_playlist(self):
-        """Load or create--if necessary--a playlist to play background music.
+    @staticmethod
+    def load_playlist():
+        """Load a playlist of background music.
 
-        If user chose a playlist in the addon configuration, this function loads the playlist chosen.
-        Or, in the case that user chose a directory(folder), this function first looks for
-        ``bgm.m3u`` file in your addon profile directory(e.g., /home/[username]/.kodi/userdata/script.service.slideshow-bgm/
-        on linux; C:\\Users\\[username]\\AppData\\Roaming\\Kodi\\userdata\\script.service.slideshow-bgm on Windows).
-        And if the file exists AND its modification time is newer than settings.xml's in the same directory,
-        load that bgm.m3u file; otherwise, it creates ``bgm.m3u`` file in the addon profile directory and load it.
+        When user chose a playlist in the addon configuration, this function loads the playlist chosen.
+        In the case that user chose a directory(folder), this function loads ``bgm.m3u`` file in your addon profile
+        directory(e.g., /home/[username]/.kodi/userdata/script.service.slideshow-bgm on linux;
+        C:\\Users\\[username]\\AppData\\Roaming\\Kodi\\userdata\\script.service.slideshow-bgm on Windows).
 
         Returns:
             Playlist object(:obj:`xbmc.PlayList`) if successful, ``None``  otherwise.
@@ -57,16 +57,9 @@ class Player(xbmc.Player):
 
         if addon.getSetting('type') == 'Playlist':
             playlist_file = addon.getSetting('playlist')
-        else:  # If 'Directory'
+        else:  # if 'Directory'
             playlist_file = os.path.join(xbmcvfs.translatePath(addon.getAddonInfo('profile')),
                                          'bgm.m3u')
-            settings_file = os.path.join(xbmcvfs.translatePath(addon.getAddonInfo('profile')),
-                                         'settings.xml')
-            if os.path.exists(playlist_file) and \
-                    os.path.getmtime(playlist_file) > os.path.getmtime(settings_file):
-                pass
-            else:
-                playlist_file = create_playlist(addon.getSetting('directory'))
 
         playlist.load(playlist_file)
         log('playlist %s loaded' % playlist_file)
@@ -82,12 +75,12 @@ class Player(xbmc.Player):
         #: If something--like video slideshow--is playing on till now, do nothing.
         if not self.isPlaying():
             if self.bgm_position == -1:  # first play
-                log('play started.')
+                log('play started')
                 self.play(self.playlist, startpos=self.bgm_position)
                 xbmc.executebuiltin('PlayerControl(RepeatAll)')
             else:
                 self.mute(True)  # prevent sound overlap
-                log('play resumed.')
+                log('play resumed')
                 self.play(self.playlist, startpos=self.bgm_position)
                 # Wait until play actually begins. Ugly again.
                 # Blocking methods such as Event.wait or Lock.acquire will freeze though.
@@ -98,9 +91,9 @@ class Player(xbmc.Player):
                 xbmc.sleep(500)
                 self.mute(False)
         else:
-            log('play ignored: playing something other.')
+            log('play ignored: playing something other')
 
-        log('play stopped.')
+        log('play stopped')
 
     def track_bgm(self):
         """Keep track of bgm playing.
@@ -132,7 +125,7 @@ class Player(xbmc.Player):
         self.play_bgm()
 
     def onAVStarted(self):
-        """Callback function called when audio/video has actually started
+        """Callback function called when audio/video has actually started.
 
         """
         self.AVstarted = True

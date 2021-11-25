@@ -3,7 +3,7 @@
 
 import os
 import xbmc, xbmcgui, xbmcvfs
-from . import addon, addonId
+from . import addon, addonName
 
 
 def log(msg):
@@ -16,7 +16,7 @@ def log(msg):
     xbmc.log('[slideshow-bgm] ' + msg, xbmc.LOGINFO)
 
 
-def notify(message, heading=addonId, icon=xbmcgui.NOTIFICATION_INFO, time=7000, sound=True):
+def notify(message, heading=addonName, icon=xbmcgui.NOTIFICATION_INFO, time=7000, sound=True):
     """Wrapper function of ``xbmcgui.Dialog().notification``.
 
     Args:
@@ -32,10 +32,11 @@ def notify(message, heading=addonId, icon=xbmcgui.NOTIFICATION_INFO, time=7000, 
 
     """
 
+    message = message + '\nCheck the log.'
     xbmcgui.Dialog().notification(heading, message, icon, time, sound)
 
 
-def show_yesno(message, heading=addonId, noLabel='Cancel', yesLabel='OK'):
+def show_yesno(message, heading=addonName, noLabel='Cancel', yesLabel='OK'):
     """ Wrapper function of ``xbmcgui.Dialog().yesno``.
 
     Args:
@@ -56,7 +57,7 @@ def show_yesno(message, heading=addonId, noLabel='Cancel', yesLabel='OK'):
     return xbmcgui.Dialog().yesno(heading, message, noLabel, yesLabel)
 
 
-def show_ok(message, heading=addonId):
+def show_ok(message, heading=addonName):
     """ Wrapper function of ``xbmcgui.Dialog().ok``.
 
     Args:
@@ -74,15 +75,15 @@ def show_ok(message, heading=addonId):
 def create_playlist(bgm_dir):
     """Create a playlist file(m3u file) with the songs in ``bgm_dir``.
 
+        .. Note: If ``filesystemencoding`` is 'askii(which seems to be default as of kodi v19.3')
+        and filenames contain any non-ascii character, it raises UnicodeError to read/write filename as str.
+        So, for now, we seem to have no choice but to read/write filename as bytes.
+
     Args:
         bgm_dir (str): Directory where to look for music files.
 
     Returns:
         str: The path of newly created playlist file if successful, ``None`` otherwise
-
-
-        .. Warning::
-            If there is no music file in the ``bgm_dir``, this function returns an empty playlist.
 
     """
     playlist_dir = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
@@ -91,28 +92,38 @@ def create_playlist(bgm_dir):
 
     count = 0
     try:
-        with open(playlist_file, 'w') as f:
-            f.write('#EXTM3U' + os.linesep * 2)
-            for root, dirs, files in os.walk(bgm_dir, followlinks=True):
+        with open(playlist_file, 'w', encoding='utf-8') as f:
+            f.write('#EXTM3U' + '\n' * 2)
+            for root, dirs, files in os.walk(bgm_dir.encode('utf-8'), followlinks=True):
                 for filename in files:
-                    if filename.lower().endswith(music_file_exts):
-                        f.write(os.path.join(root, filename) + os.linesep)
-                        count += 1
+                    if filename.decode('utf-8').lower().endswith(music_file_exts):
+                        try:
+                            path = os.path.join(root.decode('utf-8'), filename.decode('utf-8'))
+                            f.write(path + '\n')
+                            count += 1
+                        except UnicodeError:
+                            continue
     except (IOError,):
-        notify("Failed to create a playlist file in "
-               + xbmcvfs.translatePath(addon.getAddonInfo('profile')),
-               xbmcgui.NOTIFICATION_ERROR)
+        notify("Failed to create a playlist file", icon=xbmcgui.NOTIFICATION_ERROR)
+        log("Failed to create a playlist file in %s" % playlist_dir)
+        if os.path.exists(playlist_file):
+            os.remove(playlist_file)
         return None
 
     if not count:
-        notify('No music file in %s' % bgm_dir,
-               xbmcgui.NOTIFICATION_WARNING)
+        notify('No music file in\n %s' % bgm_dir, icon=xbmcgui.NOTIFICATION_WARNING)
+        if os.path.exists(playlist_file):
+            os.remove(playlist_file)
+        return None
 
+    log('playlist successfully created')
     return playlist_file
 
 
 def check_config():
-    """Check addon settings to see if they are configured properly.
+    """Check addon settings.
+
+    This function also ensures a valid playlist is present.
 
     Returns:
         str: empty string, i.e., '' if no problem found, applicable error string, otherwise.
@@ -120,17 +131,28 @@ def check_config():
     """
     _type = addon.getSetting('type')
     playlist = addon.getSetting('playlist')
-    directory = addon.getSetting('directory')
+    bgm_dir = addon.getSetting('directory')
+    profile_path = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
+    playlist_file = os.path.join(profile_path, 'bgm.m3u')
+    settings_file = os.path.join(profile_path, 'settings.xml')
+
     msg = ''
 
-    if (_type == 'Playlist' and playlist == 'Not Selected') or \
-            (_type == 'Directory' and directory == 'Not Selected'):
-        msg = "No background music set for slideshow.\n"
-
-    elif _type == 'Playlist' and not os.path.exists(playlist):
-        msg = "Invalid playlist file: %s\n" % playlist
-
-    elif _type == 'Directory' and not os.path.exists(directory):
-        msg = "Invalid directory: %s\n" % directory
+    if _type == 'Playlist':
+        if playlist == 'Not Selected':
+            msg = "No background music set.\n"
+        elif not os.path.exists(playlist):
+            msg = "Invalid playlist file: %s\n" % playlist
+    else:  # directory
+        if bgm_dir == 'Not Selected':
+            msg = "No background music set.\n"
+        elif not os.path.exists(bgm_dir):
+            msg = "Invalid directory: %s\n" % bgm_dir
+        elif not os.path.exists(playlist_file):
+            create_playlist(bgm_dir)
+        elif os.path.getmtime(playlist_file) < os.path.getmtime(settings_file):
+            create_playlist(bgm_dir)
+    if msg:
+        log(msg)
 
     return msg

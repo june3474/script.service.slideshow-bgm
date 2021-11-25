@@ -1,45 +1,49 @@
-* slideshow-BGM
-*slideshow-BGM* is a kodi addon(python script) that plays background music(BGM) while playing a slideshow.
+* slideshow-bgm
+*slideshow-bgm* is a kodi addon(python script) that plays background music(bgm) when playing slideshow.
 
 Feel free to use, modify and share your code!
 
 ** 1. Install
 1) *Enable installing from unknown sources.*
-    - *Notes:* Pictures belows were copied from [[https://www.technadu.com/enable-unknown-sources-on-kodi/11658/]]
+    - *Notes:* Pictures below were copied from [[https://www.technadu.com/enable-unknown-sources-on-kodi/11658/]]
     - Go to kodi's Home screen and click on the gear icon located in the top-left corner.
     [[file:resources/docs/enable_unknown_source_1.jpg]]
     - click on the *system* button on the right side of the screen.
     [[file:resources/docs/enable_unknown_source_2.jpg]]
     - Using the left-placed sidebar, hover over the 'Add-ons' item.
     On the right, click on *Unknown Sources*. You will be presented with a message against enabling this option. You can feel free to continue by clicking on Yes.
-2) *Download slideshow-BGM*
-    - For kodi v18 Leia and lower, https://github.com/june3474/script.slideshow-BGM/releases/download/0.1.1/script.slideshow-BGM-0.1.1.zip
-    - For kodi v19 Matrix, https://github.com/june3474/script.slideshow-BGM/releases/latest/download/script.slideshow-BGM-0.2.0.zip
+2) *Download slideshow-bgm*
+    - For kodi v18 Leia and lower, https://github.com/june3474/script.service.slideshow-bgm/releases/download/0.1.1/slideshow-bgm-0.1.1.zip
+    - For kodi v19 Matrix, https://github.com/june3474/script.service.slideshow-bgm/releases/latest/download/slideshow-bgm-0.3.0.zip
 3) *Install the downloaded zip file*
-    - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-BGM-<version>.zip file you downloaded and click it.
+    - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-bgm-<version>.zip file you downloaded and click it.
     [[file:resources/docs/install_1.png]]
     [[file:resources/docs/install_2.png]]
 
-** 2. Hook up with skin
-*slideshow-BGM* is expected to run only while slideshowing. One simple way to do so is hooking up slideshow-BGM script to slideshow window(SlideShow.xml).
-You can do it by editing ~SlideShow.xml~ file.
+** 2. Interlock with skin
+*slideshow-bgm* script needs to be interlocked with current skin to work properly. 
+Technically, interlocking is done by inserting a xml tag below into the ~SlideShow.xml~ file of the current skin,
+and it is automatically performed after slideshow-bgm being installed.
+In this way, slideshow-bgm runs only while playing slideshow, rather than monitoring Kodi's activities all the time.
+#+BEGIN_EXAMPLE
+<onload condition="System.HasAddon(script.service.slideshow-bgm) + System.AddonIsEnabled(script.service.slideshow-bgm)">RunAddon(script.service.slideshow-bgm)</onload>
+#+END_EXAMPLE
+But if you are using the default skin( ~estuary~ as of Kodi v19), slideshow-bgm might not be able to insert the tag due to the permission problem.
+In that case, slideshow-bgm will inform you and you will have to manually edit the ~SlideShow.xml~ file.
+See the pictures below.
 
-*** Editing ~Slideshow.xml~
-    - It is easy and straightforward. Just locate the ~SlideShow.xml~ file of your current skin; open it  with your favorite text editor; and insert one line of xml codes as below:
-
+[[file:resources/docs/permission_notify.png]]
 [[file:resources/docs/hookup_after.png]]
 
-*Note:* You will need root/Administrator privilege if you are using the default skin(as of Kodi v19, estuary).
-
 ** 3. Configure
-The last step is to choose yor BGM. Go to the configure screen of slideshow-BGM and select a playlist or a directory which contains music. If you choose a directory, slideshow-BGM will create a playlist in [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]]. That's it. Enjoy!
+The last step is to choose your bgm. Go to the configure screen of slideshow-bgm and select a playlist or a directory which contains music. If you choose a directory, slideshow-bgm will create a playlist in [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]]. That's it. Enjoy!
 
 [[file:resources/docs/configure_1.png]]
 [[file:resources/docs/configure_2.png]]
 
 ** Troubleshooting
-*** slideshow-BGM keeps playing the same music from the beginning
-In most cases, this happens due to corrupted or abnormally encoded audio files. They seem to fail SeekTime function of kodi which use ffmpeg/libav internally; and SeekTime() ends up on time 0, the beginning of the file. Take a look at the example below:
+*** slideshow-bgm keeps playing the same music from the beginning
+In most cases, this happens due to corrupted or abnormally encoded audio files. They seem to fail ~SeekTime()~ function of kodi which uses ffmpeg/libav internally; and ~SeekTime()~ ends up on time 0, the beginning of the file. Take a look at the example below:
 
 **** A sample audio file
 #+BEGIN_EXAMPLE
@@ -63,8 +67,8 @@ ffmpeg[7F6567015700]: [mp3float] Could not update timestamps for skipped samples
 SeekTime - seek ended up on time 0
 #+END_EXAMPLE
 
-The solution is to remove the audio file from your BGM playlist. If you have chosen a directory in slideshow-BGM
-settings, edit '~BGM.m3u~' file in ~script.slideshow-BGM~ directory(folder) under [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]].
+The solution is to remove the audio file from your bgm playlist. If you have chosen a directory in slideshow-bgm
+settings, edit ~bgm.m3u~ file in ~script.slideshow-bgm~ directory(folder) under [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]].
 
 ** Change Log
 - [version 0.1.0] Initial version, compatible with kodi v18 Leia.
@@ -73,3 +77,6 @@ settings, edit '~BGM.m3u~' file in ~script.slideshow-BGM~ directory(folder) unde
   + Add troubleshooting section in README.org
 - [version 0.2.0]
   + Compatible with kodi v19 Matrix
+- [version 0.3.0]
+  + Change addon id to 'script.service.slideshow-bgm' from 'script.slideshow-BGM'.
+  + Automate skin-interlocking process.

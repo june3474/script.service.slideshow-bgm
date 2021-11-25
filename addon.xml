@@ -17,7 +17,7 @@
     <source>https://github.com/june3474/script.service.slideshow-bgm</source>
     <news>Version 0.3.0
     - Change addon id to 'script.service.slideshow-bgm' from 'script.slideshow-BGM'.
-    - Automate skin hook-up process.
+    - Automate skin-interlocking process.
     </news>
     <assets>
         <icon>resources/icon.png</icon>

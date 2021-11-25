@@ -2,25 +2,16 @@
 
 import sys
 import xbmc
-from resources.lib import addon
 from resources.lib.player import Player
-from resources.lib.utils import check_config, show_yesno, log
+from resources.lib.utils import log, check_config, notify
 
 
-log("addon.py started.")
+log("addon.py started")
 
-# check configuration
-while True:
-    msg = check_config()
-    if msg == '':  # configuration is OK
-        break
-    else:
-        if show_yesno(msg + '\nClick Yes to proceed to Slideshow-bgm settings'
-                      + '\nCancel will abort Slideshow-bgm'):
-            addon.openSettings()
-        else:
-            log('Aborted by user.')
-            sys.exit(1)
+# make sure a valid playlist exists and up-to-date
+if check_config():
+    notify('Invalid settings')
+    sys.exit(1)
 
 player = Player()
 player.play_bgm()
@@ -32,4 +23,4 @@ while xbmc.getCondVisibility('Slideshow.IsActive'):
 
 player.stop()
 
-log('addon.py ended.')
+log('addon.py ended')

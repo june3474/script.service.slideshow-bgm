@@ -7,13 +7,14 @@ from . import addonId
 
 
 class Binder():
-    """Helper class used to tie slideshow-bgm addon to the current skin.
+    """Helper class for interlocking slideshow-bgm with the current skin.
 
     """
 
     def __init__(self, target=None):
         self.target = target if target else self.find_SlideShow_xml()
-        self.parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))  # preserve comments
+        # preserve comments
+        self.parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))
         self.tree = ET.parse(self.target, self.parser)
         self.root = self.tree.getroot()
         self.element = ET.Element('onload')
@@ -81,9 +82,9 @@ class Binder():
         """Check current skin's SlideShow.xml is tied to ``slideshow-bgm`` of the current
         skin.
 
-        Technically, check ``<onload  condition="System.HasAddon(script.service.slideshow-bgm) +
+        Technically, check the node of ``<onload condition="System.HasAddon(script.service.slideshow-bgm) +
         System.AddonIsEnabled(script.service.slideshow-bgm)">RunAddon(script.service.slideshow-bgm)</onload>``
-        node exists in the `SlideShow.xml` file of the current skin.
+        exists in the `SlideShow.xml` file of the current skin.
 
         Returns:
             bool:  True if it's hooked, False otherwise.
@@ -101,9 +102,9 @@ class Binder():
         return False if ret is None else True
 
     def insert_tag(self):
-        """Insert hook-up tag into `SlideShow.xml` file of the current skin.
+        """Insert interlocking tag into `SlideShow.xml` file of the current skin.
 
-        The contents hook-up tag are ``<onload condition="System.HasAddon(script.service.slideshow-bgm) +
+        The contents of the tag are ``<onload condition="System.HasAddon(script.service.slideshow-bgm) +
         System.AddonIsEnabled(script.service.slideshow-bgm)">RunAddon(script.service.slideshow-bgm)</onload>``
 
         Returns:
@@ -121,7 +122,7 @@ class Binder():
         return True
 
     def remove_tag(self):
-        """Remove the hook-up tag from `SlideShow.xml` file of the current skin.
+        """Remove the interlocking tag from `SlideShow.xml` file of the current skin.
 
         """
 
