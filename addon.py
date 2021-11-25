@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import xbmc
+import xbmc, xbmcgui
 from resources.lib.player import Player
 from resources.lib.utils import log, check_config, notify
 
@@ -10,8 +10,8 @@ log("addon.py started")
 
 # make sure a valid playlist exists and up-to-date
 if check_config():
-    notify('Invalid settings')
-    sys.exit(1)
+    notify('Invalid settings', icon=xbmcgui.NOTIFICATION_ERROR)
+    sys.exit()
 
 player = Player()
 player.play_bgm()

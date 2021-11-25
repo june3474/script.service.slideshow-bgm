@@ -160,3 +160,15 @@ def check_config():
         log(msg)
 
     return msg
+
+
+def just_installed():
+    """Check slideshow-bgm being installed just now.
+
+    Returns:
+        bool: True if just installed, False otherwise
+
+    """
+    profile_path = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
+    settings_file = os.path.join(profile_path, 'settings.xml')
+    return not os.path.exists(settings_file)
