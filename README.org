@@ -33,7 +33,7 @@ However, if you are using the default skin(~estuary~ as of Kodi v19), slideshow-
 In that case, slideshow-bgm will inform you and you will have to manually edit the ~SlideShow.xml~ file.
 See the pictures below.
 
-If you really don't want to manually edit ~SlideShow.xml~ for some reason, you can alternatively install another skin.
+If you really don't want to manually edit ~SlideShow.xml~ though, you can alternatively install another skin.
 There are so many awesome skins available such as [[https://github.com/jurialmunkey/skin.arctic.horizon][arctic horizon]].
 
 [[file:resources/docs/permission_notify.png]]
