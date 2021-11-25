@@ -81,6 +81,6 @@ settings, edit ~bgm.m3u~ file in ~script.slideshow-bgm~ directory(folder) under 
   + Add troubleshooting section in README.org
 - [version 0.2.0]
   + Compatible with kodi v19 Matrix
-- [version 0.3.0]
+- [version 0.3.1]
   + Change addon id to 'script.service.slideshow-bgm' from 'script.slideshow-BGM'.
   + Automate skin-interlocking process.
