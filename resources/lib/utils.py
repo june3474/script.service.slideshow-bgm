@@ -77,10 +77,12 @@ def create_playlist(bgm_dir):
 
         .. Note: If ``filesystemencoding`` is 'askii(which seems to be default as of kodi v19.3')
         and filenames contain any non-ascii character, it raises UnicodeError to read/write filename as str.
-        So, for now, we seem to have no choice but to read/write filename as bytes.
+        So, we seem to have no choice but to read/write filename as bytes until kodi's embedded python changes
+        its default ``filesystemencoding`` to ``utf-8``.
 
     Args:
-        bgm_dir (str): Directory where to look for music files.
+        bgm_dir (bytes): Directory where to look for music files.
+                         Note the type of the argument is ``bytes``.
 
     Returns:
         str: The path of newly created playlist file if successful, ``None`` otherwise
@@ -94,7 +96,7 @@ def create_playlist(bgm_dir):
     try:
         with open(playlist_file, 'w', encoding='utf-8') as f:
             f.write('#EXTM3U' + '\n' * 2)
-            for root, dirs, files in os.walk(bgm_dir.encode('utf-8'), followlinks=True):
+            for root, dirs, files in os.walk(bgm_dir, followlinks=True):
                 for filename in files:
                     if filename.decode('utf-8').lower().endswith(music_file_exts):
                         try:
@@ -130,8 +132,10 @@ def check_config():
 
     """
     _type = addon.getSetting('type')
-    playlist = addon.getSetting('playlist')
-    bgm_dir = addon.getSetting('directory')
+    # The path of playlist may contain non-ascii character
+    playlist = addon.getSetting('playlist').encode('utf-8')
+    # The path of bgm_dir may contain non-ascii character
+    bgm_dir = addon.getSetting('directory').encode('utf-8')
     profile_path = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
     playlist_file = os.path.join(profile_path, 'bgm.m3u')
     settings_file = os.path.join(profile_path, 'settings.xml')
@@ -139,15 +143,15 @@ def check_config():
     msg = ''
 
     if _type == 'Playlist':
-        if playlist == 'Not Selected':
+        if playlist.decode('utf-8') == 'Not Selected':
             msg = "No background music set.\n"
-        elif not os.path.exists(playlist):
-            msg = "Invalid playlist file: %s\n" % playlist
+        elif not os.path.exists(playlist.decode('utf-8')):
+            msg = "Invalid playlist file: %s\n" % playlist.decode('utf-8')
     else:  # directory
-        if bgm_dir == 'Not Selected':
+        if bgm_dir.decode('utf-8') == 'Not Selected':
             msg = "No background music set.\n"
-        elif not os.path.exists(bgm_dir):
-            msg = "Invalid directory: %s\n" % bgm_dir
+        elif not os.path.exists(bgm_dir.decode('utf-8')):
+            msg = "Invalid directory: %s\n" % bgm_dir.decode('utf-8')
         elif not os.path.exists(playlist_file):
             create_playlist(bgm_dir)
         elif os.path.getmtime(playlist_file) < os.path.getmtime(settings_file):

@@ -8,22 +8,13 @@
 import sys
 import shutil
 import xbmcgui
-from resources.lib import addon
 from resources.lib.binder import Binder
-from resources.lib.utils import log, notify, show_yesno, check_config
+from resources.lib.utils import log, notify, check_config
 
 # check configuration
-while True:
-    msg = check_config()
-    if msg == '':  # configuration is OK
-        log('Configuration check, OK!')
-        break
-    else:
-        if show_yesno(msg + '\nProceed to configure slideshow-bgm?'):
-            addon.openSettings()
-        else:
-            log('Aborted by user')
-            sys.exit(1)
+
+if not check_config():
+    log('Configuration check, OK!')
 
 # check interlocking with skin
 binder = Binder()
@@ -34,7 +25,7 @@ if not binder.check_hooked():
         log('The interlocking tag has been inserted to %s\n' % binder.target +
             'and the original file was saved as %s' % binder.target+'.original')
     else:  # installed && enabled && not hooked && not writable
-        notify('Unable to interlock with the skin', icon=xbmcgui.NOTIFICATION_WARNING)
+        notify('Unable to interlock with the skin', icon=xbmcgui.NOTIFICATION_ERROR)
         log('Failed to write the interlocking tag into %s\n' % binder.target +
             'Check your permission')
         sys.exit(1)

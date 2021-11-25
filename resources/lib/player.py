@@ -5,7 +5,7 @@ import _thread as thread
 import os
 import xbmc, xbmcvfs
 from . import addon
-from .utils import create_playlist, log
+from .utils import log
 
 
 class Player(xbmc.Player):
