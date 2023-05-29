@@ -4,8 +4,8 @@
         <setting label="32010" type="lsep" />
         <setting type="sep" />
         <setting label="32011" type="labelenum" id="type" values="Playlist|Directory" default="Playlist" />
-        <setting label="32012" type="file" id="playlist" visible="eq(-1,Playlist)" mask="*.pls|*.m3u" default="Not Selected" />
+        <setting label="32012" type="file" id="playlist" visible="eq(-1,Playlist)" mask="*.pls|*.m3u|*.xsp" default="Not Selected" />
         <setting label="32013" type="folder" id="directory" visible="eq(-2,Directory)" source="local" default="Not Selected" />
-        <setting label="32014" type="bool" id="shuffle" default="false" />
+        <setting label="32014" type="bool" id="random" default="false" />
     </category>
 </settings>

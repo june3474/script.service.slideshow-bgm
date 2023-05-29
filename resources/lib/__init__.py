@@ -2,6 +2,6 @@
 
 import xbmcaddon
 
-addonId = 'script.service.slideshow-bgm'
+addonId = 'script.slideshow-bgm'
 addonName = 'slideshow-bgm'
 addon = xbmcaddon.Addon(addonId)
