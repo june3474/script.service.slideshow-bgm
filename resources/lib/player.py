@@ -5,95 +5,145 @@ import _thread as thread
 import os
 import xbmc, xbmcvfs
 from . import addon
-from .utils import log
+from .utils import create_playlist, log
 
 
 class Player(xbmc.Player):
-    """A child class of ``xbmc.Player``.
+    """A subclass of ``xbmc.Player``.
 
     The main features of this class are:
-        - To override on ``onPlayBackStopped`` and ``onPlayBackEnded`` callback functions.
-        - To start a thread which keeps track of the position of currently playing background music.
+        - To override on ``onPlayBackStopped`` and ``onPlayBackEnded`` 
+          callback functions.
+        - To start a thread which keeps track of the position of currently 
+          playing background music.
+    By the way, ``Player`` class of ``Kodi`` seems to be a Singleton.
 
     """
     def __init__(self):
-        super(Player, self).__init__()
+        super().__init__()
 
-        self.playlist = self.load_playlist()
+        # Check if the playlist is vaild.
+        self.playlist = self.get_playlist_file()
+        if not self.playlist:
+            raise ValueError('Invalid Playlist!')
+
+        # After Mute() is called, 'Player.Muted' is not always correct.
+        # Maybe it takes time for the correct value to be set .
+        self.is_muted = xbmc.getCondVisibility('Player.Muted')
         self.bgm_position = -1
-        self.bgm_seektime = 0
-        self.AVstarted = False
+        self.set_player()
+
+    def set_player(self):
+        """Set the properties of randomness and repeat.
+
+        A monkey patch for that PlayerControl() only works after the Player starts.
+        
+        """
+        self.mute(True)
+        # Check & Set the randomness of the playlist.
+        self.playlist_random = addon.getSettingBool('random')
+        xbmc.executebuiltin('PlayMedia(%s)' % self.playlist)
+        xbmc.executebuiltin('PlayerControl(Play)')  # Actually, Pause.
+        if self.playlist_random:
+            xbmc.executebuiltin('PlayerControl(RandomOn)')
+        else:
+            xbmc.executebuiltin('PlayerControl(RandomOff)')
+            # If not random, we keep the track of the offset of the playlist.
+            # Thread will automatically end when main thread does.
+            thread.start_new_thread(self.track_bgm, ())
+
+        # Set repeat. by default, RepeatAll
+        xbmc.executebuiltin('PlayerControl(RepeatAll)')
+        xbmc.executebuiltin('PlayerControl(Stop)')
         self.mute(False)
 
-        # Thread automatically ends when main thread does.
-        thread.start_new_thread(self.track_bgm, ())
-
-    @staticmethod
-    def mute(switch):
-        """Mute on/off.
-
+    def mute(self, switch=None):
+        """Toggle or set the mute state of the Player
+        
         Args:
-            switch (bool): Mute on if True, off otherwise.
+            switch (None or bool): 
+                If ``switch`` is None, toggle the mute state.
+                elif ``switch`` is True, mute on.
+                else ``switch`` is False, mute off.
 
         """
-        state = xbmc.getCondVisibility('Player.Muted')
-        if bool(state) != switch:
-            xbmc.executebuiltin('Mute()')
+        if switch is None or (switch ^ self.is_muted):  # XOR
+            xbmc.executebuiltin('Mute')  # 'Mute()' also works
+            self.is_muted = not self.is_muted
 
-    @staticmethod
-    def load_playlist():
-        """Load a playlist of background music.
+    def get_playlist_file(self):
+        """Get the filepath of the background music playlist.
 
-        When user chose a playlist in the addon configuration, this function loads the playlist chosen.
-        In the case that user chose a directory(folder), this function loads ``bgm.m3u`` file in your addon profile
-        directory(e.g., /home/[username]/.kodi/userdata/script.service.slideshow-bgm on linux;
-        C:\\Users\\[username]\\AppData\\Roaming\\Kodi\\userdata\\script.service.slideshow-bgm on Windows).
+        If the user choose a playlist in the addon configuration, this function 
+        returns the path of the playlist chosen. Or, if user choose a directory, 
+        this function first looks for ``bgm.m3u`` file in your addon profile 
+        directory.
+        FYI the ``addon profile directory`` is:
+            On linux, $HOME/.kodi/userdata/script.service.slideshow-bgm/;
+            On Windows, %AppData%\\Roaming\\Kodi\\userdata\\script.service.slideshow-bgm
+
+        If ``bgm.m3u`` exists AND its modification time is newer than 
+        ``settings.xml``'s in the same directory, return the pahth of ``bgm.m3u``; 
+        otherwise, it creates ``bgm.m3u`` in the addon profile directory 
+        and returns the path of it.
 
         Returns:
-            Playlist object(:obj:`xbmc.PlayList`) if successful, ``None``  otherwise.
+            str: the path of the playlist if successful, ``None``  otherwise.
 
         """
-        playlist = xbmc.PlayList(xbmc.PLAYLIST_MUSIC)
-
         if addon.getSetting('type') == 'Playlist':
             playlist_file = addon.getSetting('playlist')
-        else:  # if 'Directory'
-            playlist_file = os.path.join(xbmcvfs.translatePath(addon.getAddonInfo('profile')),
-                                         'bgm.m3u')
+        else:  # 'Directory'
+            profile_dir = xbmcvfs.translatePath(addon.getAddonInfo('profile'))
+            playlist_file = os.path.join(profile_dir, 'bgm.m3u')
+            settings_file = os.path.join(profile_dir, 'settings.xml')
+            playlist_st = xbmcvfs.Stat(playlist_file)
+            settings_st = xbmcvfs.Stat(settings_file)
+            # We don't use os.path.exists() here due to 'filesystemencoding'
+            if xbmcvfs.exists(playlist_file) and \
+                    playlist_st.st_mtime() > settings_st.st_mtime():
+                pass
+            else:
+                bgm_dir = addon.getSetting('directory').encode('utf-8')
+                playlist_file = create_playlist(bgm_dir)
 
-        playlist.load(playlist_file)
-        log('playlist %s loaded' % playlist_file)
-        playlist.shuffle(addon.getSettingBool('shuffle'))
-        return playlist
+        return playlist_file
 
     def play_bgm(self):
-        """Play background music if currently not playing video or audio.
+        """Play background music if currently not playing video/audio.
+
+        Note:
+            When this method is called by onPlayBackStopped()/onPlayBackended(),
+            Player might be playing something already.
+            For example, If we have selected the option to allow a slideshow 
+            with videos, and if there are videos in the list to be included in 
+            the slideshow, then Player might be playing a video by the time 
+            this function starts to run.
+            Or, after the callback functions were called, kodi might request 
+            to play something before this function starts.
 
         """
-        # Wait till the previous play--if any--ends completely.
-        xbmc.sleep(500)
-        #: If something--like video slideshow--is playing on till now, do nothing.
-        if not self.isPlaying():
-            if self.bgm_position == -1:  # first play
-                log('play started')
-                self.play(self.playlist, startpos=self.bgm_position)
-                xbmc.executebuiltin('PlayerControl(RepeatAll)')
-            else:
-                self.mute(True)  # prevent sound overlap
-                log('play resumed')
-                self.play(self.playlist, startpos=self.bgm_position)
-                # Wait until play actually begins. Ugly again.
-                # Blocking methods such as Event.wait or Lock.acquire will freeze though.
-                while not self.AVstarted:
-                    xbmc.sleep(100)
-                # self.seekTime(self.bgm_seektime) <-- Not Work
-                xbmc.executebuiltin('Seek(%s)' % self.bgm_seektime)
-                xbmc.sleep(500)
-                self.mute(False)
+        if self.isPlaying():
+            # Wait for upto 500ms for the previous play to ends completely .
+            for i in range(5):
+                xbmc.sleep(100)
+                if not self.isPlaying():
+                    break
+                elif i == 4:
+                    return
+        
+        #log('play started. random: %s, bgm_position: %d, title: %s' % \
+        #    (self.playlist_random, self.bgm_position, xbmc.getInfoLabel('Player.Title')))
+        
+        # We use executebuiltin() because xbmc.Player.play() does not play
+        # the smart playlist(.xsp).
+        if self.playlist_random:
+            xbmc.executebuiltin('PlayMedia(%s)' % self.playlist)
         else:
-            log('play ignored: playing something other')
-
-        log('play stopped')
+            # For playlist of which length is 0 like .xsp or pls with audio 
+            # stream, playoffset is pointless and ignored(no error).
+            xbmc.executebuiltin('PlayMedia(%s, playoffset=%d)' % \
+                                (self.playlist, self.bgm_position+1))
 
     def track_bgm(self):
         """Keep track of bgm playing.
@@ -101,31 +151,26 @@ class Player(xbmc.Player):
         """
         while xbmc.getCondVisibility('Slideshow.IsActive'):
             if self.isPlayingAudio():
-                position = self.playlist.getposition()
-                seektime = self.getTime()
+                position = int(xbmc.getInfoLabel('Playlist.Position(music)'))
                 # Guard condition from kodi's thread intervention.
-                if position >= 0 and seektime > 0:
+                if position >= 0:
                     self.bgm_position = position
-                    self.bgm_seektime = seektime
-
             xbmc.sleep(1000)
 
     def onPlayBackStopped(self):
         """Callback function called when audio/video play stops by user.
 
         """
-        self.AVstarted = False
         self.play_bgm()
 
     def onPlayBackEnded(self):
         """Callback function called when audio/video play ends normally.
 
         """
-        self.AVstarted = False
         self.play_bgm()
 
-    def onAVStarted(self):
+    def onAVStarted(self):  # Not used currently
         """Callback function called when audio/video has actually started.
 
         """
-        self.AVstarted = True
+        super().onAVStarted()
