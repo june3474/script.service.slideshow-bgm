@@ -38,5 +38,5 @@ msgid "Directory"
 msgstr ""
 
 msgctxt "#32014"
-msgid "Shuffle"
+msgid "Random"
 msgstr ""

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.service.slideshow-bgm" name="Slideshow-bgm" version="0.3.1" provider-name="dks">
+<addon id="script.slideshow-bgm" name="Slideshow-bgm" version="0.4.0" provider-name="dks">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
   </requires>
   <extension point="xbmc.python.script" library="addon.py">
-    <provides>executable</provides>
+    <provides>image</provides>
   </extension>
   <extension point="xbmc.service" library="service.py" />
   <extension point="xbmc.addon.metadata">
@@ -12,12 +12,12 @@
     <description lang="en_GB">Play background music while slideshowing</description>
     <platform>all</platform>
     <license>GPL-3.0-only</license>
-    <website>https://github.com/june3474/script.service.slideshow-bgm</website> <!-- may be omitted.  -->
+    <website>https://github.com/june3474/script.slideshow-bgm</website> <!-- may be omitted.  -->
     <email>june3474@gmail.com</email> <!-- may be omitted.  -->
-    <source>https://github.com/june3474/script.service.slideshow-bgm</source>
-    <news>Version 0.3.0
-    - Change addon id to 'script.service.slideshow-bgm' from 'script.slideshow-BGM'.
-    - Automate skin-interlocking process.
+    <source>https://github.com/june3474/script.slideshow-bgm</source>
+    <news>Version 0.4.0
+    - Change addon id to 'script.slideshow-bgm' from 'script.service.slideshow-bgm'. 
+    - Add the support of smart playlist(xsp).
     </news>
     <assets>
         <icon>resources/icon.png</icon>
