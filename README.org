@@ -1,26 +1,34 @@
 * slideshow-bgm
 *slideshow-bgm* is a kodi addon(python script) that plays background music(bgm) when playing slideshow.
+It works on v19 Matrix and v20 Nexus.
 
 Feel free to use, modify and share your code!
 
 ** 1. Install
-1) *Enable installing from unknown sources.*
-    - *Notes:* Pictures below were copied from [[https://www.technadu.com/enable-unknown-sources-on-kodi/11658/]]
-    - Go to kodi's Home screen and click on the gear icon located in the top-left corner.
-    [[file:resources/docs/enable_unknown_source_1.jpg]]
-    - click on the *system* button on the right side of the screen.
-    [[file:resources/docs/enable_unknown_source_2.jpg]]
-    - Using the left-placed sidebar, hover over the 'Add-ons' item.
-    On the right, click on *Unknown Sources*. You will be presented with a message against enabling this option. 
-    You can feel free to continue by clicking on Yes.
-2) *Download slideshow-bgm*
-    - https://github.com/june3474/script.slideshow-bgm/releases/download/0.4.0/script.slideshow-bgm-0.4.0.zip
-3) *Install the downloaded zip file*
-    - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select 
-    *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-bgm-<version>.zip file 
-    you have downloaded and click it.
-    [[file:resources/docs/install_1.png]]
-    [[file:resources/docs/install_2.png]]
+*** 1-1. Using git
+    - cd to the ~addons~ folder under [[https://kodi.wiki/view/kodi_data_folder#Location][kodi data folder]].
+    - ~git clone https://github.com/june3474/script.slideshow-bgm.git~
+    - Enable ~slideshow-bgm~ in Kodi.
+
+*** 1-2. Manual Installation
+**** 1-2-1. *Enable installing from unknown sources.*
+     - *Notes:* Pictures below were copied from [[https://www.technadu.com/enable-unknown-sources-on-kodi/11658/]]
+     - Go to kodi's Home screen and click on the gear icon located in the top-left corner.
+     [[file:resources/docs/enable_unknown_source_1.jpg]]
+     - click on the *system* button on the right side of the screen.
+     [[file:resources/docs/enable_unknown_source_2.jpg]]
+     - Using the left-placed sidebar, hover over the 'Add-ons' item.
+     On the right, click on *Unknown Sources*. You will be presented with a message against enabling this option. 
+     You can feel free to continue by clicking on Yes.
+**** 1-2-2. *Download slideshow-bgm*
+     - https://github.com/june3474/script.slideshow-bgm/releases/download/0.4.1/script.slideshow-bgm-0.4.1.zip
+**** 1-2-3. *Install the downloaded zip file*
+     - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select 
+     *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-bgm-<version>.zip file 
+     you have downloaded and click it.
+     [[file:resources/docs/install_1.png]]
+
+     [[file:resources/docs/install_2.png]]
 
 ** 2. Interconnect to skin
 *slideshow-bgm* script needs to be interconnected to the skin to work properly. 
@@ -43,6 +51,7 @@ As you might already know, there are so many awesome skins such as
 [[https://github.com/jurialmunkey/skin.arctic.horizon][arctic horizon]].
 
 [[file:resources/docs/permission_notify.png]]
+
 [[file:resources/docs/hookup_after.png]]
 
 ** 3. Configure
@@ -52,10 +61,11 @@ in [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]] for you.
 That's it. Enjoy!
 
 [[file:resources/docs/configure_1.png]]
+
 [[file:resources/docs/configure_2.png]]
 
 ** 4. Troubleshooting
-*** slideshow-bgm keeps playing the same music from the beginning
+*** 4-1. slideshow-bgm keeps playing the same music from the beginning
 In most cases, this happens due to corrupted or abnormally encoded audio files. 
 They seem to fail ~SeekTime()~ function of kodi which uses ffmpeg/libav internally; 
 and ~SeekTime()~ ends up on time 0, the beginning of the file. Take a look at the example below:

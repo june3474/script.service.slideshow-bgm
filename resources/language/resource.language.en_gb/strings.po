@@ -40,3 +40,7 @@ msgstr ""
 msgctxt "#32014"
 msgid "Random"
 msgstr ""
+
+msgctxt "#32100"
+msgid "For .xsp(smart playlist) & .pls playlist, this setting is pointless and always set to true."
+msgstr ""

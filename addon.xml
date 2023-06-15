@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.slideshow-bgm" name="Slideshow-bgm" version="0.4.0" provider-name="dks">
+<addon id="script.slideshow-bgm" name="Slideshow-bgm" version="0.4.1" provider-name="dks">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
   </requires>

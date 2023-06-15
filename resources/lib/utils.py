@@ -6,17 +6,20 @@ import xbmc, xbmcgui, xbmcvfs
 from . import addon, addonName
 
 
-def log(msg):
+def log(msg, level=xbmc.LOGDEBUG):
     """Wrapper function for ``xbmcgui.log()``.
 
     Args:
         msg (str): message to log.
+        level (int): log level to output at. (default=LOGDEBUG)
+        Note:
+            xbmc.LOGDEBUG, xbmc.LOGINFO, xbmc.LOGWARNING, xbmc.LOGERROR, xbmc.LOGFATAL 
 
     """
-    xbmc.log('[slideshow-bgm] ' + msg, xbmc.LOGINFO)
+    xbmc.log('[slideshow-bgm] ' + msg, level)
 
 
-def notify(message, heading=addonName, icon=xbmcgui.NOTIFICATION_INFO, time=7000, sound=True):
+def notify(message, heading=addonName, icon=xbmcgui.NOTIFICATION_INFO, time=8000, sound=True):
     """Wrapper function of ``xbmcgui.Dialog().notification``.
 
     Args:
