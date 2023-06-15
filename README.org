@@ -5,12 +5,12 @@ It works on v19 Matrix and v20 Nexus.
 Feel free to use, modify and share your code!
 
 ** 1. Install
-*** 1-1. Using git
+*** 1-1. Using git (Recommended)
     - cd to the ~addons~ folder under [[https://kodi.wiki/view/kodi_data_folder#Location][kodi data folder]].
     - ~git clone https://github.com/june3474/script.slideshow-bgm.git~
     - Enable ~slideshow-bgm~ in Kodi.
 
-*** 1-2. Manual Installation
+*** 1-2. Manual Installation (If you are not familiar with git)
 **** 1-2-1. *Enable installing from unknown sources.*
      - *Notes:* Pictures below were copied from [[https://www.technadu.com/enable-unknown-sources-on-kodi/11658/]]
      - Go to kodi's Home screen and click on the gear icon located in the top-left corner.
