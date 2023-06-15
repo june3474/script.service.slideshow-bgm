@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Define a subclass of ``xmbc.Player``"""
+"""A subclass of :class:`xmbc.Player`"""
 
 import _thread as thread
 import os
@@ -9,14 +9,17 @@ from .utils import create_playlist, log
 
 
 class Player(xbmc.Player):
-    """A subclass of ``xbmc.Player``.
+    """A subclass of :class:`xbmc.Player`.
 
     The main features of this class are:
-        - To override on ``onPlayBackStopped`` and ``onPlayBackEnded`` 
-          callback functions.
+        - To override callback functions like :meth:`onPlayBackStopped` and 
+        :meth:`onPlayBackEnded`.
         - To start a thread which keeps track of the position of currently 
           playing background music.
-    By the way, ``Player`` class of ``Kodi`` seems to be a Singleton.
+    
+    .. Note::
+
+        :class:`Player` seems to be a Singleton.
 
     """
     def __init__(self):
@@ -25,10 +28,13 @@ class Player(xbmc.Player):
         # Check if the playlist is vaild.
         self.playlist = self.get_playlist_file()
         if not self.playlist:
-            raise ValueError('Invalid Playlist!')
-
-        # After Mute() is called, 'Player.Muted' is not always correct.
-        # Maybe it takes time for the correct value to be set .
+            raise ValueError('Invalid Playlist.')
+        self.playlist_type = os.path.splitext(self.playlist)[1:][0][1:]
+        # For playlist of which length is 0 like .xsp or pls with audio stream,
+        # playoffset is pointless and ignored(no error).
+        self.random = addon.getSettingBool('random') if self.playlist_type == 'm3u' else True
+        # After Mute() is called, The value of ``Player.Muted`` does not change
+        # immediatly. So we manage the mute state ourselves via ``is_muted``.
         self.is_muted = xbmc.getCondVisibility('Player.Muted')
         self.bgm_position = -1
         self.set_player()
@@ -36,26 +42,23 @@ class Player(xbmc.Player):
     def set_player(self):
         """Set the properties of randomness and repeat.
 
-        A monkey patch for that PlayerControl() only works after the Player starts.
+        A monkey patch for PlayerControl() that works only after the Player starts.
         
         """
         self.mute(True)
-        # Check & Set the randomness of the playlist.
-        self.playlist_random = addon.getSettingBool('random')
         xbmc.executebuiltin('PlayMedia(%s)' % self.playlist)
         xbmc.executebuiltin('PlayerControl(Play)')  # Actually, Pause.
-        if self.playlist_random:
+        if self.random:
             xbmc.executebuiltin('PlayerControl(RandomOn)')
         else:
             xbmc.executebuiltin('PlayerControl(RandomOff)')
-            # If not random, we keep the track of the offset of the playlist.
-            # Thread will automatically end when main thread does.
-            thread.start_new_thread(self.track_bgm, ())
-
         # Set repeat. by default, RepeatAll
         xbmc.executebuiltin('PlayerControl(RepeatAll)')
         xbmc.executebuiltin('PlayerControl(Stop)')
         self.mute(False)
+
+        # Thread will automatically end when main thread does.
+        thread.start_new_thread(self.track_bgm, ())
 
     def mute(self, switch=None):
         """Toggle or set the mute state of the Player
@@ -76,15 +79,15 @@ class Player(xbmc.Player):
 
         If the user choose a playlist in the addon configuration, this function 
         returns the path of the playlist chosen. Or, if user choose a directory, 
-        this function first looks for ``bgm.m3u`` file in your addon profile 
+        this function first looks for ``bgm.m3u`` file in the addon profile 
         directory.
-        FYI the ``addon profile directory`` is:
-            On linux, $HOME/.kodi/userdata/script.service.slideshow-bgm/;
-            On Windows, %AppData%\\Roaming\\Kodi\\userdata\\script.service.slideshow-bgm
+        FYI, the ``addon profile directory`` is:
+            On linux, $HOME/.kodi/userdata/script.slideshow-bgm/;
+            On Windows, %AppData%\\Roaming\\Kodi\\userdata\\script.slideshow-bgm
 
         If ``bgm.m3u`` exists AND its modification time is newer than 
-        ``settings.xml``'s in the same directory, return the pahth of ``bgm.m3u``; 
-        otherwise, it creates ``bgm.m3u`` in the addon profile directory 
+        ``settings.xml``'s in the same directory, return the path of ``bgm.m3u``; 
+        otherwise, it creates ``bgm.m3u`` in the ``addon profile directory`` 
         and returns the path of it.
 
         Returns:
@@ -116,35 +119,39 @@ class Player(xbmc.Player):
             When this method is called by onPlayBackStopped()/onPlayBackended(),
             Player might be playing something already.
             For example, If we have selected the option to allow a slideshow 
-            with videos, and if there are videos in the list to be included in 
-            the slideshow, then Player might be playing a video by the time 
-            this function starts to run.
+            with videos, and if any video clips are included in the slideshow, 
+            Player might be playing a video when this method starts to run.
             Or, after the callback functions were called, kodi might request 
-            to play something before this function starts.
+            to play something before this function actually starts to play BGM.
 
         """
-        if self.isPlaying():
-            # Wait for upto 500ms for the previous play to ends completely .
+        # ``xbmc.getCondVisibility('Slideshow.IsVideo')`` is necessary because
+        # when the next slideshow item is a video clip and it is on the process
+        # of loading--i.e., it's not playing yet--we don't need to play bgm.
+        if self.isPlaying() or xbmc.getCondVisibility('Slideshow.IsVideo'):
+            # Wait for upto 500ms considering the asynchronousness of infolabels.
             for i in range(5):
                 xbmc.sleep(100)
-                if not self.isPlaying():
+                if not (self.isPlaying() or xbmc.getCondVisibility('Slideshow.IsVideo')):
                     break
                 elif i == 4:
+                    log('play rejected. title: %s slide: %s' % \
+                        (xbmc.getInfoLabel('Player.Title'), xbmc.getInfoLabel('Slideshow.Filename')))
                     return
-        
-        #log('play started. random: %s, bgm_position: %d, title: %s' % \
-        #    (self.playlist_random, self.bgm_position, xbmc.getInfoLabel('Player.Title')))
+
+        log('play started. title: %s slide: %s' % \
+            (xbmc.getInfoLabel('Player.Title'), xbmc.getInfoLabel('Slideshow.Filename')))
         
         # We use executebuiltin() because xbmc.Player.play() does not play
         # the smart playlist(.xsp).
-        if self.playlist_random:
+        if self.random:
+            #self.play(item=self.playlist, startpos=self.bgm_position+1)
             xbmc.executebuiltin('PlayMedia(%s)' % self.playlist)
         else:
-            # For playlist of which length is 0 like .xsp or pls with audio 
-            # stream, playoffset is pointless and ignored(no error).
+            #self.play(item=self.playlist, startpos=self.bgm_position+1)
             xbmc.executebuiltin('PlayMedia(%s, playoffset=%d)' % \
                                 (self.playlist, self.bgm_position+1))
-
+            
     def track_bgm(self):
         """Keep track of bgm playing.
 
@@ -162,15 +169,20 @@ class Player(xbmc.Player):
 
         """
         self.play_bgm()
-
+        
     def onPlayBackEnded(self):
         """Callback function called when audio/video play ends normally.
 
         """
         self.play_bgm()
-
-    def onAVStarted(self):  # Not used currently
+        
+    def onAVStarted(self):
         """Callback function called when audio/video has actually started.
 
-        """
-        super().onAVStarted()
+        Sometimes, e.g., after slideshowing a video clip, slideshow pauses.(issue #7) 
+
+        """       
+        if self.isPlayingAudio() and xbmc.getCondVisibility('Slideshow.IsPaused'):
+            json = '{"jsonrpc":"2.0", "method":"%s", "params":%s, "id":1}' \
+                % ('Input.ButtonEvent', '{"button":"space", "keymap":"KB"}')
+            xbmc.executeJSONRPC(json)

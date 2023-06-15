@@ -1,11 +1,59 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<settings>
-    <category label="32001">
-        <setting label="32010" type="lsep" />
-        <setting type="sep" />
-        <setting label="32011" type="labelenum" id="type" values="Playlist|Directory" default="Playlist" />
-        <setting label="32012" type="file" id="playlist" visible="eq(-1,Playlist)" mask="*.pls|*.m3u|*.xsp" default="Not Selected" />
-        <setting label="32013" type="folder" id="directory" visible="eq(-2,Directory)" source="local" default="Not Selected" />
-        <setting label="32014" type="bool" id="random" default="false" />
-    </category>
+<?xml version="1.0" ?>
+<settings version="1">
+	<section id="script.slideshow-bgm">
+		<category id="bgm" label="32001" help="">
+			<group id="1" label="32010">
+				<setting id="type" type="string" label="32011" help="">
+					<level>0</level>
+					<default>Playlist</default>
+					<constraints>
+						<options>
+							<option label="Playlist">Playlist</option>
+							<option label="Directory">Directory</option>
+						</options>
+					</constraints>
+					<control type="spinner" format="string"/>
+				</setting>
+				<setting id="playlist" type="path" label="32012" help="">
+					<level>0</level>
+					<default>Not Selected</default>
+					<constraints>
+						<writable>false</writable>
+						<masking>*.pls|*.m3u|*.xsp</masking>
+					</constraints>
+					<dependencies>
+						<dependency type="visible">
+							<condition operator="is" setting="type">Playlist</condition>
+						</dependency>
+					</dependencies>
+					<control type="button" format="file">
+						<heading>32012</heading>
+					</control>
+				</setting>
+				<setting id="directory" type="path" label="32013" help="">
+					<level>0</level>
+					<default>Not Selected</default>
+					<constraints>
+						<sources>
+							<source>local</source>
+						</sources>
+						<writable>false</writable>
+					</constraints>
+					<dependencies>
+						<dependency type="visible">
+							<condition operator="is" setting="type">Directory</condition>
+						</dependency>
+					</dependencies>
+					<control type="button" format="path">
+						<heading>32013</heading>
+					</control>
+				</setting>
+				<setting id="random" type="boolean" label="32014" help="32100">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+			</group>
+		</category>
+	</section>
 </settings>

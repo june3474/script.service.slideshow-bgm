@@ -2,12 +2,12 @@
 
 import sys
 import xbmc, xbmcgui
-from resources.lib import addon
+from resources.lib import addon, addonName
 from resources.lib.player import Player
 from resources.lib.utils import check_config, show_yesno, log, notify
 
 
-log("addon.py started.")
+log("Slideshow-bgm started.")
 
 # check configuration
 while True:
@@ -26,9 +26,10 @@ while True:
 try:
     player = Player()
 except ValueError as E:
-    notify(E.__str__() + " Check the log.", icon=xbmcgui.NOTIFICATION_ERROR)
+    notify(E.__str__(), heading=addonName+" Error", icon=xbmcgui.NOTIFICATION_ERROR)
+    sys.exit(1)
 
-player.play_bgm()
+#player.play_bgm()
 
 # Ugly! but Blocking methods such as Tread.join or Lock.acquire does not work.
 # They block all processes following and even callback functions of Player.
@@ -43,4 +44,4 @@ while True:
 
 player.stop()
 
-log('addon.py ended.')
+log('Slideshow-bgm ended.')
