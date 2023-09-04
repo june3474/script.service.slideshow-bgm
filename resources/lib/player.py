@@ -167,11 +167,16 @@ class Player(xbmc.Player):
     def onPlayBackStopped(self):
         """Callback function called when audio/video play stops by user.
 
+        In particular, this event happens when the user click the '->' button 
+        to move on the next item while slideshowing a video clip. 
+
         """
         self.play_bgm()
         
     def onPlayBackEnded(self):
         """Callback function called when audio/video play ends normally.
+
+        In particular, this event happens when slideshowing a video clip ends.
 
         """
         self.play_bgm()
@@ -183,6 +188,7 @@ class Player(xbmc.Player):
 
         """       
         if self.isPlayingAudio() and xbmc.getCondVisibility('Slideshow.IsPaused'):
-            json = '{"jsonrpc":"2.0", "method":"%s", "params":%s, "id":1}' \
-                % ('Input.ButtonEvent', '{"button":"space", "keymap":"KB"}')
-            xbmc.executeJSONRPC(json)
+            #json = '{"jsonrpc":"2.0", "method":"%s", "params":%s, "id":1}' \
+            #    % ('Input.ButtonEvent', '{"button":"space", "keymap":"KB"}')
+            #xbmc.executeJSONRPC(json)
+            xbmc.executebuiltin('Action(PlayPause)')
