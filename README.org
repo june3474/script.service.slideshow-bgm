@@ -6,7 +6,7 @@ Feel free to use, modify and share your code!
 
 ** 1. Install
 *** 1-1. Using git (Recommended)
-    - cd to the ~addons~ folder under [[https://kodi.wiki/view/kodi_data_folder#Location][kodi data folder]].
+    - ~cd~ to the ~addons~ folder under [[https://kodi.wiki/view/kodi_data_folder#Location][kodi data folder]].
     - ~git clone https://github.com/june3474/script.slideshow-bgm.git~
     - Enable ~slideshow-bgm~ in Kodi.
 
@@ -14,60 +14,59 @@ Feel free to use, modify and share your code!
 **** 1-2-1. *Enable installing from unknown sources.*
      - *Notes:* Pictures below were copied from [[https://www.technadu.com/enable-unknown-sources-on-kodi/11658/]]
      - Go to kodi's Home screen and click on the gear icon located in the top-left corner.
-     [[file:resources/docs/enable_unknown_source_1.jpg]]
+     [[file:docs/enable_unknown_source_1.jpg]]
      - click on the *system* button on the right side of the screen.
-     [[file:resources/docs/enable_unknown_source_2.jpg]]
+     [[file:docs/enable_unknown_source_2.jpg]]
      - Using the left-placed sidebar, hover over the 'Add-ons' item.
-     On the right, click on *Unknown Sources*. You will be presented with a message against enabling this option. 
+     On the right, click on *Unknown Sources*. You will be presented with a message against enabling this option.
      You can feel free to continue by clicking on Yes.
 **** 1-2-2. *Download slideshow-bgm*
      - https://github.com/june3474/script.slideshow-bgm/releases/download/0.4.1/script.slideshow-bgm-0.4.1.zip
 **** 1-2-3. *Install the downloaded zip file*
-     - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select 
-     *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-bgm-<version>.zip file 
+     - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select
+     *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-bgm-<version>.zip file
      you have downloaded and click it.
-     [[file:resources/docs/install_1.png]]
+     [[file:docs/install_1.png]]
 
-     [[file:resources/docs/install_2.png]]
+     [[file:docs/install_2.png]]
 
 ** 2. Interconnect to skin
-*slideshow-bgm* script needs to be interconnected to the skin to work properly. 
+*slideshow-bgm* script needs to be interconnected to the skin to work properly.
 Technically, interconnecting is done by inserting a xml tag below in the ~SlideShow.xml~ file of the current skin,
 and it is automatically performed after *slideshow-bgm* being installed or enabled.
 In this way, *slideshow-bgm* runs only while playing slideshow, rather than all the time while *Kodi* runs.
 #+BEGIN_EXAMPLE
 <onload condition="System.HasAddon(script.slideshow-bgm) + System.AddonIsEnabled(script.slideshow-bgm)">RunAddon(script.slideshow-bgm)</onload>
 #+END_EXAMPLE
-However, if you are using the default skin(~estuary~ as of Kodi v19) on linux, it might not be able to insert the tag 
+However, if you are using the default skin(~estuary~ as of Kodi v19) on linux, it might not be able to insert the tag
 due to the permission problem.
 In that case, *slideshow-bgm* will inform you and you will need to manually edit the ~SlideShow.xml~ file.
 See the pictures below.
 
-If you are really reluctant to manually edit ~SlideShow.xml~ of the default skin though, you can alternatively 
-install another skin *before* installing slideshow-bgm. 
-
-Since non-default skins are intalled in your private ~addons~ directory, there will be no permission problem.
-As you might already know, there are so many awesome skins such as 
+If you are really reluctant to manually edit ~SlideShow.xml~ of the default skin though, you can alternatively
+install another skin *BEFORE* installing slideshow-bgm. Since non-default skins are intalled in your private ~addons~ directory,
+there will be no permission problem. As you already know, there are so many awesome skins such as
 [[https://github.com/jurialmunkey/skin.arctic.horizon][arctic horizon]].
+The original ~SlideShow.xml~ is saved as ~SlideShow.xml.original~.
 
-[[file:resources/docs/permission_notify.png]]
+[[file:docs/permission_notify.png]]
 
-[[file:resources/docs/hookup_after.png]]
+[[file:docs/hookup_after.png]]
 
 ** 3. Configure
-The last step is to choose your bgm. Go to the configure screen of *slideshow-bgm* and select a music playlist 
-or a directory containning music files. If you choose a directory, slideshow-bgm will create a playlist(~bgm.m3u~) 
-in [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]] for you. 
+The last step is to choose your bgm. Go to the configure screen of *slideshow-bgm* and select a music playlist
+or a directory containning music files. If you choose a directory, slideshow-bgm will create a playlist(~bgm.m3u~)
+in [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]] for you.
 That's it. Enjoy!
 
-[[file:resources/docs/configure_1.png]]
+[[file:docs/configure_1.png]]
 
-[[file:resources/docs/configure_2.png]]
+[[file:docs/configure_2.png]]
 
 ** 4. Troubleshooting
 *** 4-1. slideshow-bgm keeps playing the same music from the beginning
-In most cases, this happens due to corrupted or abnormally encoded audio files. 
-They seem to fail ~SeekTime()~ function of kodi which uses ffmpeg/libav internally; 
+In most cases, this happens due to corrupted or abnormally encoded audio files.
+They seem to fail ~SeekTime()~ function of kodi which uses ffmpeg/libav internally;
 and ~SeekTime()~ ends up on time 0, the beginning of the file. Take a look at the example below:
 
 **** A sample audio file
@@ -81,7 +80,7 @@ Input #0, mp3, from 'sample.mp3':
     encoder         : Lavf58.20.100
   Duration: 00:04:22.94, start: 0.138122, bitrate: 15 kb/s
     Stream #0:0: Audio: mp3, 8000 Hz, mono, fltp, 8 kb/s
-    Stream #0:1: Video: mjpeg (Baseline), yuvj420p(pc, bt470bg/unknown/unknown), 
+    Stream #0:1: Video: mjpeg (Baseline), yuvj420p(pc, bt470bg/unknown/unknown),
     1500x1495 [SAR 1:1 DAR 300:299], 90k tbr, 90k tbn, 90k tbc (attached pic)
     Metadata:
       comment         : Cover (front)
@@ -93,13 +92,18 @@ ffmpeg[7F6567015700]: [mp3float] Could not update timestamps for skipped samples
 SeekTime - seek ended up on time 0
 #+END_EXAMPLE
 
-The solution is to remove the audio file from your bgm playlist. 
-If you have chosen a directory in slideshow-bgm settings, edit ~bgm.m3u~ file 
-in ~script.slideshow-bgm~ directory(folder) under 
+The solution is to remove the audio file from your bgm playlist.
+If you have chosen a directory in slideshow-bgm settings, edit ~bgm.m3u~ file
+in ~script.slideshow-bgm~ directory(folder) under
 [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]].
 
 *** [Update]
-Starting from version 0.4.0, seekTime() function is no longer used. 
+Starting from version 0.4.0, seekTime() function is no longer used.
 
-** 5. Change Log
+** 5. Uninstall
+   - Use kodi's addon menu or delete ~script.slideshow-bgm~ folder in [[https://kodi.wiki/view/kodi_data_folder#Location][kodi data folder]]/~addons~/.
+   - Delete ~script.slideshow-bgm~ folder in [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]].
+   - Restore your original ~SlideShow.xml~, i.e., delete ~SlideShow.xml~ and rename ~SlideShow.xml.original~ to ~SlideShow.xml~.
+
+** 6. Change Log
 *** [[file:changelog.org][link]]
