@@ -26,7 +26,8 @@ Feel free to use, modify and share your code!
      On the right, click on *Unknown Sources*. You will be presented with a message against enabling this option.
      You can feel free to continue by clicking on Yes.
 **** 1-2-2. *Download slideshow-bgm*
-     - https://github.com/june3474/script.slideshow-bgm/releases/download/0.4.1/script.slideshow-bgm-0.4.1.zip
+     - Go to https://github.com/june3474/script.slideshow-bgm/releases
+     - Download script.slideshow-bgm-<latest version>.zip
 **** 1-2-3. *Install the downloaded zip file*
      - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon(top-left corner) and select *Install from ZIP file*.
        You'll see a dialog window to choose a zip file. Locate slideshow-bgm-[version].zip file you have downloaded and click it.
