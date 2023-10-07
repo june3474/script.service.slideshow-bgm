@@ -1,4 +1,9 @@
-* slideshow-bgm
+#+TITLE: script.slideshow-bgm
+#+AUTHOR: june3474
+#+OPTIONS: toc:nil num:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://june3474.github.io/script.slideshow-bgm/org.css" />
+
+* [[https://github.com/june3474/script.slideshow-bgm][slideshow-bgm]]
 *slideshow-bgm* is a kodi addon(python script) that plays background music(bgm) when playing slideshow.
 It works on v19 Matrix and v20 Nexus.
 
@@ -12,23 +17,22 @@ Feel free to use, modify and share your code!
 
 *** 1-2. Manual Installation (If you are not familiar with git)
 **** 1-2-1. *Enable installing from unknown sources.*
-     - *Notes:* Pictures below were copied from [[https://www.technadu.com/enable-unknown-sources-on-kodi/11658/]]
+*Notes:* Pictures below were copied from [[https://www.technadu.com/enable-unknown-sources-on-kodi/11658/]]
      - Go to kodi's Home screen and click on the gear icon located in the top-left corner.
-     [[file:docs/enable_unknown_source_1.jpg]]
+     [[https://june3474.github.io/script.slideshow-bgm/img/enable_unknown_source_1.jpg]]
      - click on the *system* button on the right side of the screen.
-     [[file:docs/enable_unknown_source_2.jpg]]
+     [[https://june3474.github.io/script.slideshow-bgm/img/enable_unknown_source_2.jpg]]
      - Using the left-placed sidebar, hover over the 'Add-ons' item.
      On the right, click on *Unknown Sources*. You will be presented with a message against enabling this option.
      You can feel free to continue by clicking on Yes.
 **** 1-2-2. *Download slideshow-bgm*
      - https://github.com/june3474/script.slideshow-bgm/releases/download/0.4.1/script.slideshow-bgm-0.4.1.zip
 **** 1-2-3. *Install the downloaded zip file*
-     - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon (top-left corner) and select
-     *Install from ZIP file*. You'll see a dialog window to choose a zip file. Locate slideshow-bgm-<version>.zip file
-     you have downloaded and click it.
-     [[file:docs/install_1.png]]
+     - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon(top-left corner) and select *Install from ZIP file*.
+       You'll see a dialog window to choose a zip file. Locate slideshow-bgm-[version].zip file you have downloaded and click it.
+     [[https://june3474.github.io/script.slideshow-bgm/img/install_1.png]]
 
-     [[file:docs/install_2.png]]
+     [[https://june3474.github.io/script.slideshow-bgm/img/install_2.png]]
 
 ** 2. Interconnect to skin
 *slideshow-bgm* script needs to be interconnected to the skin to work properly.
@@ -49,9 +53,9 @@ there will be no permission problem. As you already know, there are so many awes
 [[https://github.com/jurialmunkey/skin.arctic.horizon][arctic horizon]].
 The original ~SlideShow.xml~ is saved as ~SlideShow.xml.original~.
 
-[[file:docs/permission_notify.png]]
+[[https://june3474.github.io/script.slideshow-bgm/img/permission_notify.png]]
 
-[[file:docs/hookup_after.png]]
+[[https://june3474.github.io/script.slideshow-bgm/img/hookup_after.png]]
 
 ** 3. Configure
 The last step is to choose your bgm. Go to the configure screen of *slideshow-bgm* and select a music playlist
@@ -59,9 +63,9 @@ or a directory containning music files. If you choose a directory, slideshow-bgm
 in [[https://kodi.wiki/view/Userdata#addon_data][addon_data folder]] for you.
 That's it. Enjoy!
 
-[[file:docs/configure_1.png]]
+[[https://june3474.github.io/script.slideshow-bgm/img/configure_1.png]]
 
-[[file:docs/configure_2.png]]
+[[https://june3474.github.io/script.slideshow-bgm/img/configure_2.png]]
 
 ** 4. Troubleshooting
 *** 4-1. slideshow-bgm keeps playing the same music from the beginning
@@ -106,4 +110,4 @@ Starting from version 0.4.0, seekTime() function is no longer used.
    - Restore your original ~SlideShow.xml~, i.e., delete ~SlideShow.xml~ and rename ~SlideShow.xml.original~ to ~SlideShow.xml~.
 
 ** 6. Change Log
-*** [[file:changelog.org][link]]
+*** [[https://june3474.github.io/script.slideshow-bgm/changelog.org][link]]
