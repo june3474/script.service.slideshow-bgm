@@ -1,9 +1,9 @@
 #+TITLE: script.slideshow-bgm
 #+AUTHOR: june3474
-#+OPTIONS: toc:nil num:nil
+#+OPTIONS: toc:nil num:nil title:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://june3474.github.io/script.slideshow-bgm/org.css" />
 
-* [[https://github.com/june3474/script.slideshow-bgm][slideshow-bgm]]
+* [[https://github.com/june3474/script.slideshow-bgm][script.slideshow-bgm]][[https://june3474.github.io/script.slideshow-bgm/img/icon50.png]]
 *slideshow-bgm* is a kodi addon(python script) that plays background music(bgm) when playing slideshow.
 It works on v19 Matrix and v20 Nexus.
 
