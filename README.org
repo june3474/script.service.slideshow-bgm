@@ -110,4 +110,4 @@ Starting from version 0.4.0, seekTime() function is no longer used.
    - Restore your original ~SlideShow.xml~, i.e., delete ~SlideShow.xml~ and rename ~SlideShow.xml.original~ to ~SlideShow.xml~.
 
 ** 6. Change Log
-*** [[https://june3474.github.io/script.slideshow-bgm/changelog.org][link]]
+*** [[https://github.com/june3474/script.slideshow-bgm/blob/devel/docs/changelog.org][link]]
