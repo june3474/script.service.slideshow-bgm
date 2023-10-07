@@ -1,4 +1,6 @@
 * Change Log
+** [version 0.4.2]
+  - Relocate doc/ director
 ** [version 0.4.1]
   - bug fix (issue #7)
 ** [version 0.4.0]
@@ -12,5 +14,5 @@
 ** [version 0.1.1]
   - Add some thread-safe code
   - Add troubleshooting section in README.org
-** [version 0.1.0] 
+** [version 0.1.0]
   - Initial version, compatible with kodi v18 Leia.
