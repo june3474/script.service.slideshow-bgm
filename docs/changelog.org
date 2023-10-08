@@ -1,6 +1,6 @@
 * Change Log
 ** [version 0.4.2]
-  - Relocate doc/ director
+  - Relocate doc/ directory
 ** [version 0.4.1]
   - bug fix (issue #7)
 ** [version 0.4.0]
