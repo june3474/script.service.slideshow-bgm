@@ -2,10 +2,11 @@
 #+AUTHOR: june3474
 #+OPTIONS: toc:nil num:nil title:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://june3474.github.io/script.slideshow-bgm/org.css" />
+#+HTML_HEAD: <meta name="description" content="Play slideshow with background music in Kodi. It works on Matrix and Nexus.">
 #+HTML_HEAD_EXTRA:  <meta name="google-site-verification" content="8bmdxQ5TN2eD07WzOoVSoVljX2bWONxo_YpM3fI36ps" />
 
 * [[https://github.com/june3474/script.slideshow-bgm][script.slideshow-bgm]][[https://june3474.github.io/script.slideshow-bgm/img/icon50.png]]
-*slideshow-bgm* is a kodi addon(python script) that plays background music(bgm) when playing slideshow.
+*slideshow-bgm* is a kodi addon that plays background music(bgm) when playing slideshow.
 It works on v19 Matrix and v20 Nexus.
 
 Feel free to use, modify and share your code!
@@ -28,7 +29,7 @@ Feel free to use, modify and share your code!
      You can feel free to continue by clicking on Yes.
 **** 1-2-2. *Download slideshow-bgm*
      - Go to https://github.com/june3474/script.slideshow-bgm/releases
-     - Download script.slideshow-bgm-<latest version>.zip
+     - Download ~Source code (zip)~ of the latest version
 **** 1-2-3. *Install the downloaded zip file*
      - In Kodi's home screen, click on *Add-ons*. Then click on the 'open box' icon(top-left corner) and select *Install from ZIP file*.
        You'll see a dialog window to choose a zip file. Locate slideshow-bgm-[version].zip file you have downloaded and click it.

@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-10-08 Sun 11:03 -->
+<!-- 2023-10-19 목 07:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>script.slideshow-bgm</title>
+<meta name="generator" content="Org mode" />
 <meta name="author" content="june3474" />
-<meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,9 +31,8 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -42,21 +41,21 @@
   pre.src {
     position: relative;
     overflow: auto;
+    padding-top: 1.2em;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    top: -8px;
-    right: 12px;
+    background-color: white;
+    top: -10px;
+    right: 10px;
     padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
+    border: 1px solid black;
   }
   pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -191,19 +190,43 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="https://june3474.github.io/script.slideshow-bgm/org.css" />
+<meta name="description" content="Play slideshow with background music in Kodi. It works on Matrix and Nexus.">
 <meta name="google-site-verification" content="8bmdxQ5TN2eD07WzOoVSoVljX2bWONxo_YpM3fI36ps" />
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
 </head>
 <body>
-<div id="content" class="content">
+<div id="content">
 
-<div id="outline-container-orgfed37ba" class="outline-2">
-<h2 id="orgfed37ba"><a href="https://github.com/june3474/script.slideshow-bgm">script.slideshow-bgm</a><img src="https://june3474.github.io/script.slideshow-bgm/img/icon50.png" alt="icon50.png" /></h2>
-<div class="outline-text-2" id="text-orgfed37ba">
+<div id="outline-container-org0f2d725" class="outline-2">
+<h2 id="org0f2d725"><a href="https://github.com/june3474/script.slideshow-bgm">script.slideshow-bgm</a><img src="https://june3474.github.io/script.slideshow-bgm/img/icon50.png" alt="icon50.png" /></h2>
+<div class="outline-text-2" id="text-org0f2d725">
 <p>
-<b>slideshow-bgm</b> is a kodi addon(python script) that plays background music(bgm) when playing slideshow.
+<b>slideshow-bgm</b> is a kodi addon that plays background music(bgm) when playing slideshow.
 It works on v19 Matrix and v20 Nexus.
 </p>
 
@@ -212,13 +235,13 @@ Feel free to use, modify and share your code!
 </p>
 </div>
 
-<div id="outline-container-org0da53fb" class="outline-3">
-<h3 id="org0da53fb">1. Install</h3>
-<div class="outline-text-3" id="text-org0da53fb">
+<div id="outline-container-org4595a65" class="outline-3">
+<h3 id="org4595a65">1. Install</h3>
+<div class="outline-text-3" id="text-org4595a65">
 </div>
-<div id="outline-container-org8fd82cd" class="outline-4">
-<h4 id="org8fd82cd">1-1. Using git (Recommended)</h4>
-<div class="outline-text-4" id="text-org8fd82cd">
+<div id="outline-container-org6bf7929" class="outline-4">
+<h4 id="org6bf7929">1-1. Using git (Recommended)</h4>
+<div class="outline-text-4" id="text-org6bf7929">
 <ul class="org-ul">
 <li><code>cd</code> to the <code>addons</code> folder under <a href="https://kodi.wiki/view/kodi_data_folder#Location">kodi data folder</a>.</li>
 <li><code>git clone https://github.com/june3474/script.slideshow-bgm.git</code></li>
@@ -227,13 +250,13 @@ Feel free to use, modify and share your code!
 </div>
 </div>
 
-<div id="outline-container-orgd757c71" class="outline-4">
-<h4 id="orgd757c71">1-2. Manual Installation (If you are not familiar with git)</h4>
-<div class="outline-text-4" id="text-orgd757c71">
+<div id="outline-container-org15e3bb2" class="outline-4">
+<h4 id="org15e3bb2">1-2. Manual Installation (If you are not familiar with git)</h4>
+<div class="outline-text-4" id="text-org15e3bb2">
 </div>
 <ul class="org-ul">
-<li><a id="orga127f1d"></a>1-2-1. <b>Enable installing from unknown sources.</b><br />
-<div class="outline-text-5" id="text-orga127f1d">
+<li><a id="orgd7ddb06"></a>1-2-1. <b>Enable installing from unknown sources.</b><br />
+<div class="outline-text-5" id="text-orgd7ddb06">
 <p>
 <b>Notes:</b> Pictures below were copied from <a href="https://www.technadu.com/enable-unknown-sources-on-kodi/11658/">https://www.technadu.com/enable-unknown-sources-on-kodi/11658/</a>
 </p>
@@ -241,7 +264,7 @@ Feel free to use, modify and share your code!
 <li>Go to kodi's Home screen and click on the gear icon located in the top-left corner.</li>
 </ul>
 
-<div id="orga1537da" class="figure">
+<div id="org210db93" class="figure">
 <p><img src="https://june3474.github.io/script.slideshow-bgm/img/enable_unknown_source_1.jpg" alt="enable_unknown_source_1.jpg" />
 </p>
 </div>
@@ -249,7 +272,7 @@ Feel free to use, modify and share your code!
 <li>click on the <b>system</b> button on the right side of the screen.</li>
 </ul>
 
-<div id="org8eb26db" class="figure">
+<div id="org1d2bd49" class="figure">
 <p><img src="https://june3474.github.io/script.slideshow-bgm/img/enable_unknown_source_2.jpg" alt="enable_unknown_source_2.jpg" />
 </p>
 </div>
@@ -262,28 +285,28 @@ You can feel free to continue by clicking on Yes.
 </p>
 </div>
 </li>
-<li><a id="orgf85527a"></a>1-2-2. <b>Download slideshow-bgm</b><br />
-<div class="outline-text-5" id="text-orgf85527a">
+<li><a id="orgb004d19"></a>1-2-2. <b>Download slideshow-bgm</b><br />
+<div class="outline-text-5" id="text-orgb004d19">
 <ul class="org-ul">
 <li>Go to <a href="https://github.com/june3474/script.slideshow-bgm/releases">https://github.com/june3474/script.slideshow-bgm/releases</a></li>
-<li>Download script.slideshow-bgm-&lt;latest version&gt;.zip</li>
+<li>Download <code>Source code (zip)</code> of the latest version</li>
 </ul>
 </div>
 </li>
-<li><a id="org76f5275"></a>1-2-3. <b>Install the downloaded zip file</b><br />
-<div class="outline-text-5" id="text-org76f5275">
+<li><a id="org02188cf"></a>1-2-3. <b>Install the downloaded zip file</b><br />
+<div class="outline-text-5" id="text-org02188cf">
 <ul class="org-ul">
 <li>In Kodi's home screen, click on <b>Add-ons</b>. Then click on the 'open box' icon(top-left corner) and select <b>Install from ZIP file</b>.
 You'll see a dialog window to choose a zip file. Locate slideshow-bgm-[version].zip file you have downloaded and click it.</li>
 </ul>
 
-<div id="orgad33c20" class="figure">
+<div id="orgcc77c71" class="figure">
 <p><img src="https://june3474.github.io/script.slideshow-bgm/img/install_1.png" alt="install_1.png" />
 </p>
 </div>
 
 
-<div id="org88dacdb" class="figure">
+<div id="org644e9f7" class="figure">
 <p><img src="https://june3474.github.io/script.slideshow-bgm/img/install_2.png" alt="install_2.png" />
 </p>
 </div>
@@ -293,16 +316,16 @@ You'll see a dialog window to choose a zip file. Locate slideshow-bgm-[version].
 </div>
 </div>
 
-<div id="outline-container-org7fb249c" class="outline-3">
-<h3 id="org7fb249c">2. Interconnect to skin</h3>
-<div class="outline-text-3" id="text-org7fb249c">
+<div id="outline-container-org4278cd4" class="outline-3">
+<h3 id="org4278cd4">2. Interconnect to skin</h3>
+<div class="outline-text-3" id="text-org4278cd4">
 <p>
 <b>slideshow-bgm</b> script needs to be interconnected to the skin to work properly.
 Technically, interconnecting is done by inserting a xml tag below in the <code>SlideShow.xml</code> file of the current skin,
 and it is automatically performed after <b>slideshow-bgm</b> being installed or enabled.
 In this way, <b>slideshow-bgm</b> runs only while playing slideshow, rather than all the time while <b>Kodi</b> runs.
 </p>
-<pre class="example" id="org2c8b43b">
+<pre class="example" id="orgb5bf4af">
 &lt;onload condition="System.HasAddon(script.slideshow-bgm) + System.AddonIsEnabled(script.slideshow-bgm)"&gt;RunAddon(script.slideshow-bgm)&lt;/onload&gt;
 </pre>
 <p>
@@ -321,22 +344,22 @@ The original <code>SlideShow.xml</code> is saved as <code>SlideShow.xml.original
 </p>
 
 
-<div id="orgb6a0619" class="figure">
+<div id="org97e8416" class="figure">
 <p><img src="https://june3474.github.io/script.slideshow-bgm/img/permission_notify.png" alt="permission_notify.png" />
 </p>
 </div>
 
 
-<div id="orgdbe7042" class="figure">
+<div id="orgfa0a30b" class="figure">
 <p><img src="https://june3474.github.io/script.slideshow-bgm/img/hookup_after.png" alt="hookup_after.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge0be782" class="outline-3">
-<h3 id="orge0be782">3. Configure</h3>
-<div class="outline-text-3" id="text-orge0be782">
+<div id="outline-container-org57215ea" class="outline-3">
+<h3 id="org57215ea">3. Configure</h3>
+<div class="outline-text-3" id="text-org57215ea">
 <p>
 The last step is to choose your bgm. Go to the configure screen of <b>slideshow-bgm</b> and select a music playlist
 or a directory containning music files. If you choose a directory, slideshow-bgm will create a playlist(<code>bgm.m3u</code>)
@@ -345,26 +368,26 @@ That's it. Enjoy!
 </p>
 
 
-<div id="org9caf4a2" class="figure">
+<div id="org53de3fc" class="figure">
 <p><img src="https://june3474.github.io/script.slideshow-bgm/img/configure_1.png" alt="configure_1.png" />
 </p>
 </div>
 
 
-<div id="orgf8cfac8" class="figure">
+<div id="org5ef348a" class="figure">
 <p><img src="https://june3474.github.io/script.slideshow-bgm/img/configure_2.png" alt="configure_2.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgfe2f479" class="outline-3">
-<h3 id="orgfe2f479">4. Troubleshooting</h3>
-<div class="outline-text-3" id="text-orgfe2f479">
+<div id="outline-container-org1cbceb4" class="outline-3">
+<h3 id="org1cbceb4">4. Troubleshooting</h3>
+<div class="outline-text-3" id="text-org1cbceb4">
 </div>
-<div id="outline-container-org36e3f7a" class="outline-4">
-<h4 id="org36e3f7a">4-1. slideshow-bgm keeps playing the same music from the beginning</h4>
-<div class="outline-text-4" id="text-org36e3f7a">
+<div id="outline-container-org8e7b215" class="outline-4">
+<h4 id="org8e7b215">4-1. slideshow-bgm keeps playing the same music from the beginning</h4>
+<div class="outline-text-4" id="text-org8e7b215">
 <p>
 In most cases, this happens due to corrupted or abnormally encoded audio files.
 They seem to fail <code>SeekTime()</code> function of kodi which uses ffmpeg/libav internally;
@@ -373,9 +396,9 @@ and <code>SeekTime()</code> ends up on time 0, the beginning of the file. Take a
 </div>
 
 <ul class="org-ul">
-<li><a id="orgf9667bf"></a>A sample audio file<br />
-<div class="outline-text-5" id="text-orgf9667bf">
-<pre class="example" id="org19e4a47">
+<li><a id="org2a00e1b"></a>A sample audio file<br />
+<div class="outline-text-5" id="text-org2a00e1b">
+<pre class="example" id="orgd6cdf78">
 ffprobe version 4.2.4 Copyright (c) 2007-2020 the FFmpeg developers
 Input #0, mp3, from 'sample.mp3':
   Metadata:
@@ -393,9 +416,9 @@ Input #0, mp3, from 'sample.mp3':
 </div>
 </li>
 
-<li><a id="org0cc393e"></a>Content of kodi.log<br />
-<div class="outline-text-5" id="text-org0cc393e">
-<pre class="example" id="org3000883">
+<li><a id="org112d2ba"></a>Content of kodi.log<br />
+<div class="outline-text-5" id="text-org112d2ba">
+<pre class="example" id="org9cf9017">
 ffmpeg[7F6567015700]: [mp3float] Could not update timestamps for skipped samples.
 SeekTime - seek ended up on time 0
 </pre>
@@ -411,9 +434,9 @@ in <code>script.slideshow-bgm</code> directory(folder) under
 </ul>
 </div>
 
-<div id="outline-container-orgb5b2a88" class="outline-4">
-<h4 id="orgb5b2a88">[Update]</h4>
-<div class="outline-text-4" id="text-orgb5b2a88">
+<div id="outline-container-org0ed70af" class="outline-4">
+<h4 id="org0ed70af">[Update]</h4>
+<div class="outline-text-4" id="text-org0ed70af">
 <p>
 Starting from version 0.4.0, seekTime() function is no longer used.
 </p>
@@ -421,9 +444,9 @@ Starting from version 0.4.0, seekTime() function is no longer used.
 </div>
 </div>
 
-<div id="outline-container-orgeec0344" class="outline-3">
-<h3 id="orgeec0344">5. Uninstall</h3>
-<div class="outline-text-3" id="text-orgeec0344">
+<div id="outline-container-orgb8fc90b" class="outline-3">
+<h3 id="orgb8fc90b">5. Uninstall</h3>
+<div class="outline-text-3" id="text-orgb8fc90b">
 <ul class="org-ul">
 <li>Use kodi's addon menu or delete <code>script.slideshow-bgm</code> folder in <a href="https://kodi.wiki/view/kodi_data_folder#Location">kodi data folder</a>/~addons~/.</li>
 <li>Delete <code>script.slideshow-bgm</code> folder in <a href="https://kodi.wiki/view/Userdata#addon_data">addon<sub>data</sub> folder</a>.</li>
@@ -432,19 +455,19 @@ Starting from version 0.4.0, seekTime() function is no longer used.
 </div>
 </div>
 
-<div id="outline-container-org2a7a17b" class="outline-3">
-<h3 id="org2a7a17b">6. Change Log</h3>
-<div class="outline-text-3" id="text-org2a7a17b">
+<div id="outline-container-org5d772a1" class="outline-3">
+<h3 id="org5d772a1">6. Change Log</h3>
+<div class="outline-text-3" id="text-org5d772a1">
 </div>
-<div id="outline-container-org1b7696a" class="outline-4">
-<h4 id="org1b7696a"><a href="https://github.com/june3474/script.slideshow-bgm/blob/master/docs/changelog.org">link</a></h4>
+<div id="outline-container-org7c62958" class="outline-4">
+<h4 id="org7c62958"><a href="https://github.com/june3474/script.slideshow-bgm/blob/master/docs/changelog.org">link</a></h4>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: june3474</p>
-<p class="date">Created: 2023-10-08 Sun 11:03</p>
+<p class="date">Created: 2023-10-19 목 07:49</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
